@@ -3,7 +3,7 @@ import { ChevronsRight } from "lucide-react";
 
 export default function ChatInterface() {
   return (
-    <div className="relative w-full max-w-xl">
+    <div className="relative w-full max-w-xl mx-auto">
       <Input
         type="search"
         placeholder="Ask Synapse anything... (e.g., 'What's the status of Project Phoenix?')"
