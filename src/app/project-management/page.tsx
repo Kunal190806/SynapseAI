@@ -69,7 +69,7 @@ export default function ProjectManagementPage() {
     <div className="grid gap-6 lg:grid-cols-2">
       <Card>
         <CardHeader>
-          <CardTitle>Adaptive Project Management</CardTitle>
+          <CardTitle>Adaptive Management</CardTitle>
           <CardDescription>
             Get real-time recommendations to optimize your project.
           </CardDescription>

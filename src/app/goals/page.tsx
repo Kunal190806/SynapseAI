@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Target, Zap, Rocket, Handshake, TrendingUp, Users } from "lucide-react";
+import { Target, Zap, Rocket, Handshake, TrendingUp, Users, Heart, Globe } from "lucide-react";
 
 const strategicGoals = [
   {
@@ -61,51 +61,114 @@ const strategicGoals = [
   },
 ];
 
+const purposeGoals = [
+    {
+      id: "purpose-1",
+      title: "Foster a Culture of Innovation",
+      icon: Lightbulb,
+      description: "Encourage experimentation and creative problem-solving at all levels.",
+      projects: [
+        { name: "Innovation Guild", status: "On Track" },
+        { name: "Internal Hackathon", status: "Completed" },
+      ]
+    },
+    {
+        id: "purpose-2",
+        title: "Commit to Sustainable Practices",
+        icon: Globe,
+        description: "Reduce our environmental footprint and promote ecological responsibility.",
+        projects: [
+          { name: "Carbon Neutral Initiative", status: "In Progress" },
+          { name: "Supplier Sustainability Audit", status: "On Track" },
+        ]
+      },
+      {
+        id: "purpose-3",
+        title: "Champion Customer-Centricity",
+        icon: Heart,
+        description: "Place the customer at the heart of every decision we make.",
+        projects: [
+          { name: "Customer Voice Program", status: "On Track" },
+          { name: "CX Journey Mapping", status: "Completed" },
+        ]
+      }
+]
+
 export default function GoalsPage() {
   return (
     <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
-          <CardTitle>Goal Mapping</CardTitle>
+          <CardTitle>Purpose & Goals</CardTitle>
           <CardDescription>
-            Real-time strategy alignment engine. Map operational tasks to high-level strategic goals.
+            Evaluate every action against both strategic goals and organizational values to ensure every action has a purpose.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <Accordion type="single" collapsible className="w-full">
-            {strategicGoals.map((goal) => (
-              <AccordionItem value={goal.id} key={goal.id}>
-                <AccordionTrigger>
-                  <div className="flex items-center gap-4 w-full">
-                    <goal.icon className="h-6 w-6 text-primary" />
-                    <div className="flex-1 text-left">
-                      <p className="font-semibold">{goal.title}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <Progress value={goal.progress} className="w-full max-w-xs h-2" />
-                        <span className="text-sm font-medium text-muted-foreground">{goal.progress}%</span>
+        <CardContent className="space-y-8">
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Strategic Goals</h3>
+            <Accordion type="single" collapsible className="w-full">
+              {strategicGoals.map((goal) => (
+                <AccordionItem value={goal.id} key={goal.id}>
+                  <AccordionTrigger>
+                    <div className="flex items-center gap-4 w-full">
+                      <goal.icon className="h-6 w-6 text-primary" />
+                      <div className="flex-1 text-left">
+                        <p className="font-semibold">{goal.title}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <Progress value={goal.progress} className="w-full max-w-xs h-2" />
+                          <span className="text-sm font-medium text-muted-foreground">{goal.progress}%</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="pl-10">
-                    <h4 className="font-semibold mb-2 text-muted-foreground">Aligned Projects:</h4>
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="pl-10">
+                      <h4 className="font-semibold mb-2 text-muted-foreground">Aligned Projects:</h4>
+                      <ul className="space-y-2">
+                        {goal.projects.map((project, index) => (
+                          <li key={index} className="flex items-center justify-between p-2 rounded-md bg-muted/50">
+                            <span className="font-medium">{project.name}</span>
+                            <div className="flex items-center gap-4">
+                              <Badge variant="outline">Alignment: {project.alignment}</Badge>
+                              <Badge variant={project.status === "On Track" || project.status === "Completed" ? "secondary" : "outline"}>{project.status}</Badge>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Core Values & Mission</h3>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {purposeGoals.map((goal) => (
+                <Card key={goal.id}>
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                        <goal.icon className="h-7 w-7 text-accent" />
+                        <CardTitle className="text-lg">{goal.title}</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground mb-4">{goal.description}</p>
+                    <h4 className="font-semibold mb-2 text-sm">Supporting Initiatives:</h4>
                     <ul className="space-y-2">
                       {goal.projects.map((project, index) => (
-                        <li key={index} className="flex items-center justify-between p-2 rounded-md bg-muted/50">
+                        <li key={index} className="flex items-center justify-between text-sm">
                           <span className="font-medium">{project.name}</span>
-                          <div className="flex items-center gap-4">
-                            <Badge variant="outline">Alignment: {project.alignment}</Badge>
-                            <Badge variant={project.status === "On Track" || project.status === "Completed" ? "secondary" : "outline"}>{project.status}</Badge>
-                          </div>
+                          <Badge variant={project.status === "Completed" ? "secondary" : "outline"}>{project.status}</Badge>
                         </li>
                       ))}
                     </ul>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>

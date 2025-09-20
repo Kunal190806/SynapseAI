@@ -34,10 +34,11 @@ export default function DashboardPage() {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl font-headline">SynapseAI</h1>
+        <p className="text-lg text-muted-foreground">The guardian of purpose and storyteller of progress.</p>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatCard
-          title="Overall Alignment"
+          title="Purpose Alignment"
           value="92%"
           icon={Target}
           description="+5% from last month"

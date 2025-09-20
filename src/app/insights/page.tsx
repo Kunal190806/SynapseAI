@@ -75,9 +75,9 @@ export default function InsightsPage() {
     <div className="grid gap-6 lg:grid-cols-2">
       <Card>
         <CardHeader>
-          <CardTitle>AI-Powered Insights</CardTitle>
+          <CardTitle>Collective Intelligence</CardTitle>
           <CardDescription>
-            Generate predictive analytics and adaptive goal setting recommendations.
+            Surface insights from the ground up by analyzing feedback, ideas, and patterns across teams.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -153,7 +153,7 @@ export default function InsightsPage() {
           </CardHeader>
           <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4 text-sm">
-                <div className="flex items-center gap-2"><Target className="w-4 h-4 text-muted-foreground" /> Overall Alignment: <strong>{dashboardData.overallAlignment}</strong></div>
+                <div className="flex items-center gap-2"><Target className="w-4 h-4 text-muted-foreground" /> Purpose Alignment: <strong>{dashboardData.overallAlignment}</strong></div>
                 <div className="flex items-center gap-2"><BrainCircuit className="w-4 h-4 text-muted-foreground" /> Active Projects: <strong>{dashboardData.activeProjects}</strong></div>
                 <div className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-muted-foreground" /> Tasks Completed: <strong>{dashboardData.tasksCompleted}</strong></div>
                 <div className="flex items-center gap-2"><Activity className="w-4 h-4 text-muted-foreground" /> Narrative Strength: <strong>{dashboardData.narrativeStrength}</strong></div>

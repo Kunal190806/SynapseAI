@@ -89,9 +89,9 @@ export default function NarrativesPage() {
     <div className="grid gap-6 lg:grid-cols-2">
       <Card>
         <CardHeader>
-          <CardTitle>Narrative Generator</CardTitle>
+          <CardTitle>Narrative Studio</CardTitle>
           <CardDescription>
-            Transform raw operational data into a strategic story.
+            Transform organizational data into interactive storytelling experiences. See contributions inside a living story of the company’s journey.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -234,7 +234,7 @@ export default function NarrativesPage() {
           </CardHeader>
           <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4 text-sm">
-                <div className="flex items-center gap-2"><Target className="w-4 h-4 text-muted-foreground" /> Overall Alignment: <strong>{dashboardData.overallAlignment}</strong></div>
+                <div className="flex items-center gap-2"><Target className="w-4 h-4 text-muted-foreground" /> Purpose Alignment: <strong>{dashboardData.overallAlignment}</strong></div>
                 <div className="flex items-center gap-2"><BrainCircuit className="w-4 h-4 text-muted-foreground" /> Active Projects: <strong>{dashboardData.activeProjects}</strong></div>
                 <div className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-muted-foreground" /> Tasks Completed: <strong>{dashboardData.tasksCompleted}</strong></div>
                 <div className="flex items-center gap-2"><Activity className="w-4 h-4 text-muted-foreground" /> Narrative Strength: <strong>{dashboardData.narrativeStrength}</strong></div>
