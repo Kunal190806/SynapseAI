@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from "next/link";
@@ -39,7 +40,6 @@ export default function AppHeader() {
         "sticky top-0 z-30 flex h-16 items-center justify-between border-b px-4 md:px-6 bg-background"
         )}>
         <div className="flex items-center gap-4 flex-1">
-          {isClient && (
             <Sheet>
               <SheetTrigger asChild>
                   <Button
@@ -79,7 +79,6 @@ export default function AppHeader() {
                   </nav>
               </SheetContent>
             </Sheet>
-          )}
         </div>
 
         <div className="flex items-center justify-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -89,7 +88,7 @@ export default function AppHeader() {
             >
                 <svg
                 xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24-24"
+                viewBox="0 0 24 24"
                 className="h-8 w-8 text-primary"
                 fill="currentColor"
                 >
