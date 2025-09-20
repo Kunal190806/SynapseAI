@@ -20,6 +20,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import AppHeader from "@/components/layout/header";
+import AppNavbar from "@/components/layout/navbar";
 
 const recentActivities = [
   { project: "Project Phoenix", task: "Deploy to staging", status: "Completed", user: "Alice" },
@@ -50,105 +52,111 @@ const getStatusVariant = (status: string): "success" | "warning" | "destructive"
 
 export default function DashboardPage() {
   return (
-    <div className="flex flex-col gap-6">
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard
-          title="Purpose Alignment"
-          value="92%"
-          icon={Target}
-          description="+5% from last month"
-          footer={<Progress value={92} className="h-2" />}
-        />
-        <StatCard
-          title="Active Projects"
-          value="12"
-          icon={BrainCircuit}
-          description="3 new this week"
-        />
-        <StatCard
-          title="Tasks Completed"
-          value="348"
-          icon={CheckCircle}
-          description="+15% from last week"
-        />
-        <StatCard
-          title="Narrative Strength"
-          value="8.5/10"
-          icon={Activity}
-          description="Consistently strong"
-        />
-      </div>
+    <div className="flex flex-col min-h-screen">
+      <AppHeader />
+      <AppNavbar />
+      <main className="flex-1 p-4 md:p-6 lg:p-8">
+        <div className="flex flex-col gap-6">
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+            <StatCard
+              title="Purpose Alignment"
+              value="92%"
+              icon={Target}
+              description="+5% from last month"
+              footer={<Progress value={92} className="h-2" />}
+            />
+            <StatCard
+              title="Active Projects"
+              value="12"
+              icon={BrainCircuit}
+              description="3 new this week"
+            />
+            <StatCard
+              title="Tasks Completed"
+              value="348"
+              icon={CheckCircle}
+              description="+15% from last week"
+            />
+            <StatCard
+              title="Narrative Strength"
+              value="8.5/10"
+              icon={Activity}
+              description="Consistently strong"
+            />
+          </div>
 
-      <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Alignment Over Time</CardTitle>
-            <CardDescription>
-              How well operational tasks are aligning with strategic goals.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <AlignmentChart />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Project Progress</CardTitle>
-            <CardDescription>
-              Completion status of active projects.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ProgressChart />
-          </CardContent>
-        </Card>
-      </div>
+          <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Alignment Over Time</CardTitle>
+                <CardDescription>
+                  How well operational tasks are aligning with strategic goals.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <AlignmentChart />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Project Progress</CardTitle>
+                <CardDescription>
+                  Completion status of active projects.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ProgressChart />
+              </CardContent>
+            </Card>
+          </div>
 
-      <div className="grid gap-4 grid-cols-1 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>
-              A log of the latest tasks and updates across all projects.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Project</TableHead>
-                  <TableHead className="hidden sm:table-cell">Task</TableHead>
-                  <TableHead className="text-right">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {recentActivities.map((activity, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="font-medium">{activity.project}</TableCell>
-                    <TableCell className="text-muted-foreground hidden sm:table-cell">{activity.task}</TableCell>
-                    <TableCell className="text-right">
-                       <Badge variant={getStatusVariant(activity.status)}>
-                        {activity.status}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Task Distribution</CardTitle>
-            <CardDescription>
-              Breakdown of tasks by strategic goal.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <TaskDistributionChart />
-          </CardContent>
-        </Card>
-      </div>
+          <div className="grid gap-4 grid-cols-1 lg:grid-cols-3">
+            <Card className="lg:col-span-2">
+              <CardHeader>
+                <CardTitle>Recent Activity</CardTitle>
+                <CardDescription>
+                  A log of the latest tasks and updates across all projects.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Project</TableHead>
+                      <TableHead className="hidden sm:table-cell">Task</TableHead>
+                      <TableHead className="text-right">Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {recentActivities.map((activity, index) => (
+                      <TableRow key={index}>
+                        <TableCell className="font-medium">{activity.project}</TableCell>
+                        <TableCell className="text-muted-foreground hidden sm:table-cell">{activity.task}</TableCell>
+                        <TableCell className="text-right">
+                          <Badge variant={getStatusVariant(activity.status)}>
+                            {activity.status}
+                          </Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Task Distribution</CardTitle>
+                <CardDescription>
+                  Breakdown of tasks by strategic goal.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <TaskDistributionChart />
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

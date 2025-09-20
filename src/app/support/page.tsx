@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import AppHeader from "@/components/layout/header";
+import AppNavbar from "@/components/layout/navbar";
 
 const faqs = [
   {
@@ -24,49 +26,55 @@ const faqs = [
 
 export default function SupportPage() {
   return (
-    <div className="flex flex-col gap-6 max-w-4xl mx-auto">
-      <Card>
-        <CardHeader>
-          <CardTitle>Support</CardTitle>
-          <CardDescription>
-            Get help with SynapseAI and find answers to your questions.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-8">
-          {/* FAQ Section */}
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Frequently Asked Questions</h3>
-            <Accordion type="single" collapsible className="w-full">
-              {faqs.map((faq, index) => (
-                <AccordionItem value={`item-${index}`} key={index}>
-                  <AccordionTrigger>{faq.question}</AccordionTrigger>
-                  <AccordionContent>
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
-
-          <Separator />
-
-          {/* Contact Form */}
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Contact Support</h3>
-            <form className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="subject">Subject</Label>
-                <Input id="subject" placeholder="e.g., Issue with Project Phoenix" />
+    <div className="flex flex-col min-h-screen">
+      <AppHeader />
+      <AppNavbar />
+      <main className="flex-1 p-4 md:p-6 lg:p-8">
+        <div className="flex flex-col gap-6 max-w-4xl mx-auto">
+          <Card>
+            <CardHeader>
+              <CardTitle>Support</CardTitle>
+              <CardDescription>
+                Get help with SynapseAI and find answers to your questions.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-8">
+              {/* FAQ Section */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Frequently Asked Questions</h3>
+                <Accordion type="single" collapsible className="w-full">
+                  {faqs.map((faq, index) => (
+                    <AccordionItem value={`item-${index}`} key={index}>
+                      <AccordionTrigger>{faq.question}</AccordionTrigger>
+                      <AccordionContent>
+                        {faq.answer}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="message">Message</Label>
-                <Textarea id="message" placeholder="Please describe your issue in detail..." className="min-h-[150px]" />
+
+              <Separator />
+
+              {/* Contact Form */}
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Contact Support</h3>
+                <form className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="subject">Subject</Label>
+                    <Input id="subject" placeholder="e.g., Issue with Project Phoenix" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="message">Message</Label>
+                    <Textarea id="message" placeholder="Please describe your issue in detail..." className="min-h-[150px]" />
+                  </div>
+                  <Button>Submit Request</Button>
+                </form>
               </div>
-              <Button>Submit Request</Button>
-            </form>
-          </div>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
     </div>
   );
 }

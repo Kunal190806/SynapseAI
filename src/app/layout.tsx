@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
-import AppHeader from '@/components/layout/header';
 import { ThemeProvider } from '@/components/theme-provider';
-import AppNavbar from '@/components/layout/navbar';
 
 export const metadata: Metadata = {
   title: 'SynapseAI',
@@ -29,14 +27,8 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
         >
-            <div className="flex flex-col min-h-screen">
-            <AppHeader />
-            <AppNavbar />
-            <main className="flex-1 p-4 md:p-6 lg:p-8">
-                {children}
-            </main>
-            </div>
-            <Toaster />
+          {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
