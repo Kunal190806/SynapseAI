@@ -28,7 +28,6 @@ import React from "react";
 export default function AppHeader() {
   const userAvatar = PlaceHolderImages.find(img => img.id === 'user-avatar');
   const { setTheme, theme } = useTheme();
-
   const [isClient, setIsClient] = React.useState(false);
 
   React.useEffect(() => {
@@ -99,44 +98,48 @@ export default function AppHeader() {
         </div>
 
         <div className="flex items-center justify-end gap-2 md:gap-4 flex-1">
-            <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-full"
-                onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-            >
-                <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                <span className="sr-only">Toggle theme</span>
-            </Button>
-            <Button variant="ghost" size="icon" className="rounded-full">
-            <Bell className="h-5 w-5" />
-            <span className="sr-only">Toggle notifications</span>
-            </Button>
-            <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-full">
-                <Avatar className="h-8 w-8">
-                    {userAvatar && <Image src={userAvatar.imageUrl} alt="User Avatar" width={32} height={32} data-ai-hint={userAvatar.imageHint} />}
-                    <AvatarFallback>
-                    <User className="h-5 w-5" />
-                    </AvatarFallback>
-                </Avatar>
+            {isClient && (
+              <>
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="rounded-full"
+                    onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+                >
+                    <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                    <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                    <span className="sr-only">Toggle theme</span>
                 </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <Link href="/settings" passHref>
-                  <DropdownMenuItem>Settings</DropdownMenuItem>
-                </Link>
-                <Link href="/support" passHref>
-                  <DropdownMenuItem>Support</DropdownMenuItem>
-                </Link>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-            </DropdownMenu>
+                <Button variant="ghost" size="icon" className="rounded-full">
+                <Bell className="h-5 w-5" />
+                <span className="sr-only">Toggle notifications</span>
+                </Button>
+                <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="rounded-full">
+                    <Avatar className="h-8 w-8">
+                        {userAvatar && <Image src={userAvatar.imageUrl} alt="User Avatar" width={32} height={32} data-ai-hint={userAvatar.imageHint} />}
+                        <AvatarFallback>
+                        <User className="h-5 w-5" />
+                        </AvatarFallback>
+                    </Avatar>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <Link href="/settings" passHref>
+                      <DropdownMenuItem>Settings</DropdownMenuItem>
+                    </Link>
+                    <Link href="/support" passHref>
+                      <DropdownMenuItem>Support</DropdownMenuItem>
+                    </Link>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Logout</DropdownMenuItem>
+                </DropdownMenuContent>
+                </DropdownMenu>
+              </>
+            )}
         </div>
     </header>
   );
