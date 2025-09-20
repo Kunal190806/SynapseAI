@@ -1,8 +1,8 @@
 'use client';
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { User, Bell, LayoutDashboard, Goal, KanbanSquare, FileText, Lightbulb, TestTube } from "lucide-react";
+import { User, Bell, LayoutDashboard, Goal, KanbanSquare, FileText, Lightbulb, TestTube, Zap } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +15,6 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from "next/image";
-import { cn } from "@/lib/utils";
 
 const menuItems = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -24,6 +23,7 @@ const menuItems = [
   { href: '/narratives', label: 'Narratives', icon: FileText },
   { href: '/insights', label: 'Insights', icon: Lightbulb },
   { href: '/simulation', label: 'Simulation', icon: TestTube },
+  { href: '/project-management', label: 'Project Management', icon: Zap },
 ];
 
 export default function AppHeader() {
