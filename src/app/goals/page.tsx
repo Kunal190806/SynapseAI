@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Target, Zap, Rocket } from "lucide-react";
+import { Target, Zap, Rocket, Handshake, TrendingUp, Users } from "lucide-react";
 
 const strategicGoals = [
   {
@@ -14,16 +14,18 @@ const strategicGoals = [
     projects: [
       { name: "Project Phoenix", alignment: "High", status: "On Track" },
       { name: "QuantumLeap", alignment: "High", status: "In Progress" },
+      { name: "Apollo", alignment: "Medium", status: "In Progress" },
     ],
   },
   {
     id: "goal-2",
     title: "Improve Customer Satisfaction by 15%",
-    icon: Target,
+    icon: Users,
     progress: 50,
     projects: [
       { name: "QuantumLeap", alignment: "Medium", status: "In Progress" },
       { name: "Project Nova", alignment: "Low", status: "On Hold" },
+      { name: "Customer Voice", alignment: "High", status: "On Track" },
     ],
   },
   {
@@ -34,6 +36,27 @@ const strategicGoals = [
     projects: [
       { name: "Orion", alignment: "High", status: "At Risk" },
       { name: "Helios", alignment: "Medium", status: "Delayed" },
+      { name: "AutomateIt", alignment: "High", status: "Completed" },
+    ],
+  },
+  {
+    id: "goal-4",
+    title: "Expand into New European Market",
+    icon: TrendingUp,
+    progress: 30,
+    projects: [
+      { name: "Market Entry Alpha", alignment: "High", status: "In Progress" },
+      { name: "Compliance Framework", alignment: "High", status: "At Risk" },
+    ],
+  },
+  {
+    id: "goal-5",
+    title: "Strengthen Strategic Partnerships",
+    icon: Handshake,
+    progress: 85,
+    projects: [
+      { name: "Partner API Integration", alignment: "High", status: "On Track" },
+      { name: "Co-Marketing Campaign", alignment: "Medium", status: "Completed" },
     ],
   },
 ];
@@ -73,7 +96,7 @@ export default function GoalsPage() {
                           <span className="font-medium">{project.name}</span>
                           <div className="flex items-center gap-4">
                             <Badge variant="outline">Alignment: {project.alignment}</Badge>
-                            <Badge variant={project.status === "On Track" ? "secondary" : "outline"}>{project.status}</Badge>
+                            <Badge variant={project.status === "On Track" || project.status === "Completed" ? "secondary" : "outline"}>{project.status}</Badge>
                           </div>
                         </li>
                       ))}

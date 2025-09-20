@@ -56,6 +56,55 @@ const projects = [
     strategicGoal: "Improve Customer Satisfaction",
     alignment: "Medium",
   },
+  {
+    name: "Apollo",
+    status: "In Progress",
+    progress: 50,
+    strategicGoal: "Increase ARR",
+    alignment: "Medium",
+  },
+  {
+    name: "Customer Voice",
+    status: "On Track",
+    progress: 80,
+    strategicGoal: "Improve Customer Satisfaction",
+    alignment: "High",
+  },
+  {
+    name: "AutomateIt",
+    status: "Completed",
+    progress: 100,
+    strategicGoal: "Enhance Operational Efficiency",
+    alignment: "High",
+  },
+  {
+    name: "Market Entry Alpha",
+    status: "In Progress",
+    progress: 30,
+    strategicGoal: "Expand into New European Market",
+    alignment: "High",
+  },
+  {
+    name: "Compliance Framework",
+    status: "At Risk",
+    progress: 15,
+    strategicGoal: "Expand into New European Market",
+    alignment: "High",
+  },
+  {
+    name: "Partner API Integration",
+    status: "On Track",
+    progress: 90,
+    strategicGoal: "Strengthen Strategic Partnerships",
+    alignment: "High",
+  },
+  {
+    name: "Co-Marketing Campaign",
+    status: "Completed",
+    progress: 100,
+    strategicGoal: "Strengthen Strategic Partnerships",
+    alignment: "Medium",
+  },
 ];
 
 export default function ProjectsPage() {
