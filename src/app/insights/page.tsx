@@ -91,7 +91,9 @@ export default function InsightsPage() {
                     <FormLabel>Organizational Data</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Paste any relevant data here: project reports, team performance metrics, market analysis, etc."
+                        placeholder="e.g., - Quarterly Sales Report (Q2 2024): Revenue up 15% YoY, but profit margin decreased by 2% due to increased marketing spend.
+- Team Performance Metrics: Engineering velocity is 20 points/sprint. Support ticket resolution time is averaging 48 hours.
+- Market Analysis: Competitor X launched a new feature that is gaining traction. Customer feedback suggests a desire for better mobile integration."
                         className="min-h-[200px]"
                         {...field}
                       />

@@ -104,7 +104,7 @@ export default function NarrativesPage() {
                   <FormItem>
                     <FormLabel>Project Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., Project Phoenix" {...field} />
+                      <Input placeholder="e.g., QuantumLeap CRM Integration" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -118,7 +118,7 @@ export default function NarrativesPage() {
                     <FormLabel>Project Goals</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="e.g., Achieve 20% market share..."
+                        placeholder="e.g., To integrate the new QuantumLeap CRM system with our existing sales and marketing platforms. Key objectives include migrating all customer data, training the sales team, and achieving a 30% reduction in manual data entry by the end of Q3."
                         {...field}
                       />
                     </FormControl>
@@ -134,7 +134,7 @@ export default function NarrativesPage() {
                     <FormLabel>Progress Summary</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="e.g., Completed phase 1, currently in user testing..."
+                        placeholder="e.g., We are currently at 75% completion. The data migration module is complete and has been tested successfully. The development of the marketing automation sync is underway, with 5 of 8 endpoints delivered. User acceptance testing is scheduled to begin in two weeks."
                         {...field}
                       />
                     </FormControl>
@@ -150,7 +150,7 @@ export default function NarrativesPage() {
                     <FormLabel>Key Achievements</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="e.g., Launched beta, secured 1000 users..."
+                        placeholder="e.g., 1. Completed data migration from legacy CRM with 99.8% accuracy. 2. Received positive feedback on the new UI from our internal sales champions. 3. Negotiated a 15% discount on the QuantumLeap enterprise license."
                         {...field}
                       />
                     </FormControl>
@@ -166,7 +166,7 @@ export default function NarrativesPage() {
                     <FormLabel>Challenges Faced</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="e.g., Unexpected technical debt, competitor launch..."
+                        placeholder="e.g., We encountered unexpected API limitations with the legacy marketing platform, requiring a custom middleware solution. This has introduced a two-week delay, but the team has mitigated further schedule risk by parallelizing other tasks."
                         {...field}
                       />
                     </FormControl>
@@ -182,7 +182,7 @@ export default function NarrativesPage() {
                     <FormLabel>Alignment to Strategic Goals</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="e.g., This project directly supports our Q3 goal of user expansion."
+                        placeholder="e.g., This project is a cornerstone of our 'Customer 360' strategic initiative. By centralizing customer data, we will empower the sales team to improve cross-selling opportunities by 25%, directly impacting our goal to increase annual recurring revenue."
                         {...field}
                       />
                     </FormControl>

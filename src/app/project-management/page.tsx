@@ -85,7 +85,7 @@ export default function ProjectManagementPage() {
                     <FormLabel>Project Description</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Describe the project, its goals, and objectives."
+                        placeholder="e.g., Project Phoenix is a Q4 initiative to redesign our mobile application's user onboarding flow. The primary goal is to increase user activation rates by 20% within the first month of launch. The project involves UX/UI redesign, front-end and back-end development, and A/B testing."
                         {...field}
                       />
                     </FormControl>
@@ -101,7 +101,11 @@ export default function ProjectManagementPage() {
                     <FormLabel>Team Structures</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Provide an overview of the different teams involved and their roles."
+                        placeholder="e.g., The project is led by a cross-functional team:
+- Core Pod (1 PM, 1 Designer, 2 FE Devs, 1 BE Dev).
+- QA Team (2 Testers).
+- Marketing (1 Product Marketing Manager for launch comms).
+The Core Pod operates in 2-week sprints."
                         {...field}
                       />
                     </FormControl>
@@ -117,7 +121,7 @@ export default function ProjectManagementPage() {
                     <FormLabel>Current Status</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Summarize the current project status, including progress, roadblocks, and recent milestones."
+                        placeholder="e.g., Sprint 3 of 6 is complete. The new UI designs are finalized. Front-end development is 50% complete. A key back-end dependency on the new authentication service is blocked, causing a potential 1-week delay. The initial A/B test plan is drafted."
                         {...field}
                       />
                     </FormControl>
@@ -133,7 +137,10 @@ export default function ProjectManagementPage() {
                     <FormLabel>Performance Data</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Provide data on team and individual performance (e.g., task completion rates, time on tasks)."
+                        placeholder="e.g., - Sprint 1 & 2 velocity: 18 points (target was 20).
+- BE Dev 1 has a high number of PR revisions, averaging 3 rounds per PR.
+- FE Dev 2 has completed 40% more tasks than FE Dev 1.
+- Current bug count: 5 critical, 12 non-critical."
                         {...field}
                       />
                     </FormControl>
