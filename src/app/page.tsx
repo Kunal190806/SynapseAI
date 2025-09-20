@@ -63,16 +63,33 @@ export default function DashboardPage() {
   const { t } = useTranslation();
   const dashboardRef = useRef<HTMLDivElement>(null);
 
-  const handleDownloadPdf = () => {
-    const input = dashboardRef.current;
-    if (!input) return;
+  const handleDownloadPdf = async () => {
+    const element = dashboardRef.current;
+    if (!element) return;
 
-    // Temporarily hide the download button so it doesn't appear in the PDF
-    const downloadButton = input.querySelector('#download-button') as HTMLElement;
-    if(downloadButton) downloadButton.style.display = 'none';
+    // Clone the element to modify it for PDF generation without affecting the live view
+    const clone = element.cloneNode(true) as HTMLElement;
+    
+    // Create a container and apply a light theme for PDF generation
+    const pdfContainer = document.createElement('div');
+    pdfContainer.style.position = 'absolute';
+    pdfContainer.style.left = '-9999px';
+    pdfContainer.style.top = '0';
+    pdfContainer.style.width = '1024px'; // A reasonable width for desktop view
+    pdfContainer.classList.add('light'); // Force light theme for PDF
+    pdfContainer.appendChild(clone);
+    document.body.appendChild(pdfContainer);
 
-    html2canvas(input, { scale: 2 }).then((canvas) => {
-        if(downloadButton) downloadButton.style.display = 'flex'; // Show it again
+    // Temporarily hide the download button in the cloned element
+    const downloadButton = clone.querySelector('#download-button') as HTMLElement;
+    if (downloadButton) downloadButton.style.display = 'none';
+
+    try {
+        const canvas = await html2canvas(clone, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#ffffff', // Force white background
+        });
 
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF('p', 'mm', 'a4');
@@ -81,44 +98,43 @@ export default function DashboardPage() {
         const canvasWidth = canvas.width;
         const canvasHeight = canvas.height;
         const ratio = canvasWidth / canvasHeight;
-        let width = pdfWidth;
-        let height = width / ratio;
-        
-        if (height > pdfHeight) {
-            height = pdfHeight;
-            width = height * ratio;
-        }
 
-        let position = 0;
-        let imgHeight = canvas.height * pdfWidth / canvas.width;
+        let imgHeight = pdfWidth / ratio;
         let heightLeft = imgHeight;
-        
+        let position = 0;
+
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, imgHeight);
         heightLeft -= pdfHeight;
 
-        while (heightLeft >= 0) {
-            position = heightLeft - imgHeight;
+        while (heightLeft > 0) {
+            position = -heightLeft;
             pdf.addPage();
             pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
             heightLeft -= pdfHeight;
         }
 
         pdf.save('synapse-dashboard.pdf');
-    });
+    } catch (error) {
+        console.error("Error generating PDF:", error);
+    } finally {
+        // Clean up by removing the container from the body
+        document.body.removeChild(pdfContainer);
+    }
   };
+
 
   return (
     <div className="flex flex-col min-h-screen">
       <AppHeader />
       <AppNavbar />
-      <main className="flex-1 p-4 md:p-6 lg:p-8" ref={dashboardRef}>
+      <main className="flex-1 p-4 md:p-6 lg:p-8">
         <div className="flex justify-end mb-4">
             <Button id="download-button" variant="outline" size="sm" onClick={handleDownloadPdf}>
                 <Download className="h-4 w-4 mr-2" />
                 {t("Download PDF")}
             </Button>
         </div>
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6" ref={dashboardRef}>
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             <StatCard
               title={t("Purpose Alignment")}

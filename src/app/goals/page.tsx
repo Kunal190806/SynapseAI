@@ -128,36 +128,63 @@ export default function GoalsPage() {
   const { t } = useTranslation();
   const goalsRef = useRef<HTMLDivElement>(null);
 
-  const handleDownloadPdf = () => {
-    const input = goalsRef.current;
-    if (!input) return;
+  const handleDownloadPdf = async () => {
+    const element = goalsRef.current;
+    if (!element) return;
 
-    html2canvas(input, { scale: 2 }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const canvasWidth = canvas.width;
-      const canvasHeight = canvas.height;
-      const ratio = canvasWidth / canvasHeight;
-      const width = pdfWidth;
-      const height = width / ratio;
+    // Clone the element to modify it for PDF generation without affecting the live view
+    const clone = element.cloneNode(true) as HTMLElement;
+    
+    // Create a container and apply a light theme for PDF generation
+    const pdfContainer = document.createElement('div');
+    pdfContainer.style.position = 'absolute';
+    pdfContainer.style.left = '-9999px';
+    pdfContainer.style.top = '0';
+    pdfContainer.style.width = '1024px'; 
+    pdfContainer.classList.add('light'); 
+    pdfContainer.appendChild(clone);
+    document.body.appendChild(pdfContainer);
 
-      let position = 0;
-      let heightLeft = canvasHeight;
-      
-      pdf.addImage(imgData, "PNG", 0, position, width, height);
-      heightLeft -= pdf.internal.pageSize.getHeight() * (canvasWidth/width) ;
-      
-      while (heightLeft >= 0) {
-          position = heightLeft - canvasHeight;
-          pdf.addPage();
-          pdf.addImage(imgData, "PNG", 0, position, width, height);
-          heightLeft -= pdf.internal.pageSize.getHeight() * (canvasWidth/width) ;
-      }
-      
-      pdf.save("synapse-goals.pdf");
-    });
+    // Temporarily hide the download button in the cloned element
+    const downloadButton = clone.querySelector('#download-button') as HTMLElement;
+    if (downloadButton) downloadButton.style.display = 'none';
+
+    try {
+        const canvas = await html2canvas(clone, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#ffffff', // Force white background
+        });
+
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+        const ratio = canvasWidth / canvasHeight;
+
+        let imgHeight = pdfWidth / ratio;
+        let heightLeft = imgHeight;
+        let position = 0;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, imgHeight);
+        heightLeft -= pdfHeight;
+
+        while (heightLeft > 0) {
+            position = -heightLeft;
+            pdf.addPage();
+            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+            heightLeft -= pdfHeight;
+        }
+
+        pdf.save('synapse-goals.pdf');
+    } catch (error) {
+        console.error("Error generating PDF:", error);
+    } finally {
+        // Clean up by removing the container from the body
+        document.body.removeChild(pdfContainer);
+    }
   };
 
   return (
@@ -174,7 +201,7 @@ export default function GoalsPage() {
                         {t("Evaluate every action against both strategic goals and organizational values to ensure every action has a purpose.")}
                     </CardDescription>
                 </div>
-                <Button variant="outline" size="icon" onClick={handleDownloadPdf}>
+                <Button id="download-button" variant="outline" size="icon" onClick={handleDownloadPdf}>
                     <Download className="h-4 w-4" />
                     <span className="sr-only">Download PDF</span>
                 </Button>
