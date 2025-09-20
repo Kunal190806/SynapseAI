@@ -121,8 +121,12 @@ export default function AppHeader() {
             <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
+                <Link href="/settings" passHref>
+                  <DropdownMenuItem>Settings</DropdownMenuItem>
+                </Link>
+                <Link href="/support" passHref>
+                  <DropdownMenuItem>Support</DropdownMenuItem>
+                </Link>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Logout</DropdownMenuItem>
             </DropdownMenuContent>

@@ -34,6 +34,7 @@ This application is built with a modern, robust, and scalable tech stack:
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/)
 - **AI/Generative:** [Genkit](https://firebase.google.com/docs/genkit)
 - **Deployment:** Firebase App Hosting
+- **API:** [Gemini API]
 
 ## Getting Started
 
