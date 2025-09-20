@@ -5,7 +5,8 @@ export const menuItems = [
   { href: '/goals', label: 'Purpose & Goals', icon: Goal },
   { href: '/projects', label: 'Projects', icon: KanbanSquare },
   { href: '/narratives', label: 'Narrative Studio', icon: FileText },
-  { href: '/insights', label: 'Collective Intelligence', icon: Users },
+  { href: '/insights', label: 'Collective Intelligence', icon: Lightbulb },
+  { href: '/teams', label: 'Teams', icon: Users },
   { href: '/simulation', label: 'Simulation', icon: TestTube },
   { href: '/project-management', label: 'Adaptive Management', icon: Zap },
 ];
