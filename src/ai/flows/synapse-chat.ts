@@ -57,16 +57,6 @@ const getProjectStatus = ai.defineTool(
   }
 );
 
-const synapseChatPrompt = ai.definePrompt({
-  name: 'synapseChatPrompt',
-  tools: [getProjectStatus],
-  system: `You are SynapseAI, the cognitive nervous system for organizations.
-Your role is to provide clear, concise, and accurate information about project status.
-When a user asks about a project, use the getProjectStatus tool to fetch the latest information.
-If the project is not found, inform the user politely.
-Keep your answers brief and to the point.`,
-});
-
 export const synapseChat = ai.defineFlow(
   {
     name: 'synapseChatFlow',
@@ -77,7 +67,7 @@ export const synapseChat = ai.defineFlow(
     const history: Message[] = [
       new Message({
         role: 'user',
-        content: [part(query)],
+        content: [{ text: query }],
       }),
     ];
 
@@ -94,7 +84,7 @@ Keep your answers brief and to the point.`,
     });
 
     const choice = llmResponse.choices[0];
-    if (choice.message.content.length > 0) {
+    if (choice.message.content.length > 0 && choice.finishReason !== 'toolCode') {
       return choice.text;
     }
 
