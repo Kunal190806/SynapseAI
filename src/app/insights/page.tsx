@@ -26,12 +26,23 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Activity, Target, CheckCircle, BrainCircuit } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
 const formSchema = z.object({
   organizationalData: z.string().min(1, 'Organizational data is required.'),
 });
+
+const dashboardData = {
+  overallAlignment: "92%",
+  activeProjects: "12",
+  tasksCompleted: "348",
+  narrativeStrength: "8.5/10",
+  recentActivities: [
+    { project: "Project Phoenix", task: "Deploy to staging", status: "Completed" },
+    { project: "QuantumLeap", task: "User feedback session", status: "In Progress" },
+  ],
+};
 
 export default function InsightsPage() {
   const [insights, setInsights] = useState<GetAiPoweredInsightsOutput | null>(
@@ -129,6 +140,33 @@ export default function InsightsPage() {
                 </p>
               )
             )}
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Dashboard Data</CardTitle>
+            <CardDescription>
+              Live data from the main dashboard for context.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="flex items-center gap-2"><Target className="w-4 h-4 text-muted-foreground" /> Overall Alignment: <strong>{dashboardData.overallAlignment}</strong></div>
+                <div className="flex items-center gap-2"><BrainCircuit className="w-4 h-4 text-muted-foreground" /> Active Projects: <strong>{dashboardData.activeProjects}</strong></div>
+                <div className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-muted-foreground" /> Tasks Completed: <strong>{dashboardData.tasksCompleted}</strong></div>
+                <div className="flex items-center gap-2"><Activity className="w-4 h-4 text-muted-foreground" /> Narrative Strength: <strong>{dashboardData.narrativeStrength}</strong></div>
+              </div>
+              <div>
+                <h4 className="font-medium mb-2">Recent Activities</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  {dashboardData.recentActivities.map((activity, index) => (
+                    <li key={index} className="flex justify-between">
+                      <span>{activity.project}: {activity.task}</span>
+                      <span className="font-medium">{activity.status}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
           </CardContent>
         </Card>
       </div>
