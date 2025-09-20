@@ -32,11 +32,8 @@ const recentActivities = [
 export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col items-center gap-4 text-center">
+      <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl font-headline">SynapseAI</h1>
-        <p className="text-muted-foreground max-w-xl">
-          The Cognitive Nervous System for Organizations. Real-time alignment between strategic intent and operational execution.
-        </p>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatCard

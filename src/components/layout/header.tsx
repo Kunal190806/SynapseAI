@@ -25,8 +25,8 @@ export default function AppHeader() {
   const userAvatar = PlaceHolderImages.find(img => img.id === 'user-avatar');
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
-        <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+    <header className="sticky top-0 z-30 flex h-16 items-center justify-center border-b bg-background px-4 md:px-6">
+        <nav className="hidden flex-nowrap items-center gap-5 text-sm font-medium md:flex lg:gap-6">
           <Link
             href="/"
             className="flex items-center gap-2 text-lg font-semibold md:text-base"
@@ -70,7 +70,7 @@ export default function AppHeader() {
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
+                  viewBox="0.0 24 24"
                   className="h-6 w-6 text-primary"
                   fill="currentColor"
                 >
