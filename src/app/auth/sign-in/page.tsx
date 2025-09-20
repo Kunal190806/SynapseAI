@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -24,15 +25,19 @@ import {
 import { Input } from '@/components/ui/input';
 import { Loader2 } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { app } from '@/lib/firebase';
 
 const formSchema = z.object({
   email: z.string().email('Invalid email address.'),
-  password: z.string().min(6, 'Password must be at least 6 characters.'),
+  password: z.string().min(1, 'Password is required.'),
 });
 
 export default function SignInPage() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const auth = getAuth(app);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -45,12 +50,33 @@ export default function SignInPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     setError(null);
-    console.log('Signing in with:', values);
-    // TODO: Implement Firebase sign-in logic
-    setTimeout(() => {
+    try {
+        await signInWithEmailAndPassword(auth, values.email, values.password);
+        router.push('/');
+    } catch (error: any) {
+        let errorMessage = "An unexpected error occurred. Please try again.";
+        if (error.code) {
+            switch (error.code) {
+                case 'auth/user-not-found':
+                    errorMessage = 'No user found with this email.';
+                    break;
+                case 'auth/wrong-password':
+                    errorMessage = 'Incorrect password. Please try again.';
+                    break;
+                case 'auth/invalid-email':
+                    errorMessage = 'The email address is not valid.';
+                    break;
+                case 'auth/invalid-credential':
+                    errorMessage = 'Invalid credentials. Please check your email and password.';
+                    break;
+                default:
+                    errorMessage = 'Failed to sign in. Please try again.';
+            }
+        }
+        setError(errorMessage);
+    } finally {
         setIsLoading(false);
-        setError("This is a demo. Sign-in functionality is not implemented.");
-    }, 1000);
+    }
   }
 
   return (

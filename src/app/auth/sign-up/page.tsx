@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -24,6 +25,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Loader2 } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { app } from '@/lib/firebase';
 
 const formSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters.'),
@@ -34,6 +37,8 @@ const formSchema = z.object({
 export default function SignUpPage() {
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
+    const auth = getAuth(app);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -47,12 +52,34 @@ export default function SignUpPage() {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
         setError(null);
-        console.log('Signing up with:', values);
-        // TODO: Implement Firebase sign-up logic
-        setTimeout(() => {
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+            await updateProfile(userCredential.user, { displayName: values.name });
+            router.push('/');
+        } catch (error: any) {
+            let errorMessage = "An unexpected error occurred. Please try again.";
+            if (error.code) {
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = 'This email address is already in use by another account.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'The email address is not valid.';
+                        break;
+                    case 'auth/operation-not-allowed':
+                        errorMessage = 'Email/password accounts are not enabled.';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = 'The password is too weak.';
+                        break;
+                    default:
+                        errorMessage = error.message;
+                }
+            }
+            setError(errorMessage);
+        } finally {
             setIsLoading(false);
-            setError("This is a demo. Sign-up functionality is not implemented.");
-        }, 1000);
+        }
     }
 
   return (
