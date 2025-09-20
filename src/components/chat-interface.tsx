@@ -46,7 +46,7 @@ export default function ChatInterface() {
         <Input
           {...form.register('query')}
           type="search"
-          placeholder="Ask anything... (e.g., 'What's the status of Project Phoenix?')"
+          placeholder=""
           className="h-10 w-full rounded-full bg-muted pl-10 pr-20"
           disabled={isLoading}
         />
