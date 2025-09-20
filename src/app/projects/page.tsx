@@ -107,6 +107,22 @@ const projects = [
   },
 ];
 
+const getStatusVariant = (status: string): "success" | "destructive" | "warning" | "secondary" | "outline" => {
+    switch (status) {
+      case "On Track":
+      case "Completed":
+        return "success";
+      case "At Risk":
+        return "warning";
+      case "Delayed":
+        return "destructive";
+      case "In Progress":
+        return "secondary";
+      default:
+        return "outline";
+    }
+  };
+
 export default function ProjectsPage() {
   return (
     <div className="flex flex-col gap-6">
@@ -140,13 +156,7 @@ export default function ProjectsPage() {
                   <TableCell className="font-medium">{project.name}</TableCell>
                   <TableCell>
                     <Badge
-                      variant={
-                        project.status === "Completed" || project.status === "On Track"
-                          ? "secondary"
-                          : project.status === "At Risk" || project.status === "Delayed"
-                          ? "destructive"
-                          : "outline"
-                      }
+                      variant={getStatusVariant(project.status)}
                     >
                       {project.status}
                     </Badge>
