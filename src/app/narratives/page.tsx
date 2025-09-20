@@ -64,19 +64,19 @@ const dashboardData = {
 export default function NarrativesPage() {
   const { t } = useTranslation();
   const [narrative, setNarrative] =
-    useState<GenerateStrategicNarrativeOutput | null>(null);
+    useState<GenerateStrategicNarrativeOutput | null>({strategicNarrative: "The QuantumLeap CRM Integration project is making significant strides, currently at 75% completion. This initiative is pivotal to our 'Customer 360' strategy, aiming to unify customer data and enhance cross-selling opportunities by 25%. Key successes include a near-flawless data migration (99.8% accuracy) and positive internal feedback on the new user interface. Despite a minor two-week delay due to API challenges with a legacy system, the team has effectively mitigated further risks by parallelizing tasks. The project remains a cornerstone of our revenue growth goals, promising to empower our sales team and drive significant business impact upon completion."});
   const [isLoading, setIsLoading] = useState(false);
   const narrativeRef = useRef<HTMLDivElement>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      projectName: '',
-      projectGoals: '',
-      progressSummary: '',
-      keyAchievements: '',
-      challengesFaced: '',
-      alignmentToStrategicGoals: '',
+      projectName: 'QuantumLeap CRM Integration',
+      projectGoals: "To integrate the new QuantumLeap CRM system with our existing sales and marketing platforms. Key objectives include migrating all customer data, training the sales team, and achieving a 30% reduction in manual data entry by the end of Q3.",
+      progressSummary: 'We are currently at 75% completion. The data migration module is complete and has been tested successfully. The development of the marketing automation sync is underway, with 5 of 8 endpoints delivered. User acceptance testing is scheduled to begin in two weeks.',
+      keyAchievements: '1. Completed data migration from legacy CRM with 99.8% accuracy.\n2. Received positive feedback on the new UI from our internal sales champions.\n3. Negotiated a 15% discount on the QuantumLeap enterprise license.',
+      challengesFaced: 'We encountered unexpected API limitations with the legacy marketing platform, requiring a custom middleware solution. This has introduced a two-week delay, but the team has mitigated further schedule risk by parallelizing other tasks.',
+      alignmentToStrategicGoals: "This project is a cornerstone of our 'Customer 360' strategic initiative. By centralizing customer data, we will empower the sales team to improve cross-selling opportunities by 25%, directly impacting our goal to increase annual recurring revenue.",
     },
   });
 
@@ -98,10 +98,8 @@ export default function NarrativesPage() {
     const element = narrativeRef.current;
     if (!element) return;
 
-    // Clone the element to modify it for PDF generation without affecting the live view
     const clone = element.cloneNode(true) as HTMLElement;
     
-    // Create a container and apply a light theme for PDF generation
     const pdfContainer = document.createElement('div');
     pdfContainer.style.position = 'absolute';
     pdfContainer.style.left = '-9999px';
@@ -111,7 +109,6 @@ export default function NarrativesPage() {
     pdfContainer.appendChild(clone);
     document.body.appendChild(pdfContainer);
 
-    // Temporarily hide the download button in the cloned element
     const downloadButton = clone.querySelector('#download-button') as HTMLElement;
     if (downloadButton) downloadButton.style.display = 'none';
 
@@ -119,7 +116,7 @@ export default function NarrativesPage() {
         const canvas = await html2canvas(clone, {
             scale: 2,
             useCORS: true,
-            backgroundColor: '#ffffff', // Force white background
+            backgroundColor: '#ffffff',
         });
 
         const imgData = canvas.toDataURL('image/png');
@@ -148,7 +145,6 @@ export default function NarrativesPage() {
     } catch (error) {
         console.error("Error generating PDF:", error);
     } finally {
-        // Clean up by removing the container from the body
         document.body.removeChild(pdfContainer);
     }
   };
@@ -176,7 +172,7 @@ export default function NarrativesPage() {
                       <FormItem>
                         <FormLabel>{t("Project Name")}</FormLabel>
                         <FormControl>
-                          <Input placeholder={t("e.g., QuantumLeap CRM Integration")} {...field} />
+                          <Input {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -190,7 +186,6 @@ export default function NarrativesPage() {
                         <FormLabel>{t("Project Goals")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder={t("e.g., To integrate the new QuantumLeap CRM system with our existing sales and marketing platforms. Key objectives include migrating all customer data, training the sales team, and achieving a 30% reduction in manual data entry by the end of Q3.")}
                             {...field}
                           />
                         </FormControl>
@@ -206,7 +201,6 @@ export default function NarrativesPage() {
                         <FormLabel>{t("Progress Summary")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder={t("e.g., We are currently at 75% completion. The data migration module is complete and has been tested successfully. The development of the marketing automation sync is underway, with 5 of 8 endpoints delivered. User acceptance testing is scheduled to begin in two weeks.")}
                             {...field}
                           />
                         </FormControl>
@@ -222,7 +216,6 @@ export default function NarrativesPage() {
                         <FormLabel>{t("Key Achievements")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder={t("e.g., 1. Completed data migration from legacy CRM with 99.8% accuracy. 2. Received positive feedback on the new UI from our internal sales champions. 3. Negotiated a 15% discount on the QuantumLeap enterprise license.")}
                             {...field}
                           />
                         </FormControl>
@@ -238,7 +231,6 @@ export default function NarrativesPage() {
                         <FormLabel>{t("Challenges Faced")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder={t("e.g., We encountered unexpected API limitations with the legacy marketing platform, requiring a custom middleware solution. This has introduced a two-week delay, but the team has mitigated further schedule risk by parallelizing other tasks.")}
                             {...field}
                           />
                         </FormControl>
@@ -254,7 +246,6 @@ export default function NarrativesPage() {
                         <FormLabel>{t("Alignment to Strategic Goals")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder={t("e.g., This project is a cornerstone of our 'Customer 360' strategic initiative. By centralizing customer data, we will empower the sales team to improve cross-selling opportunities by 25%, directly impacting our goal to increase annual recurring revenue.")}
                             {...field}
                           />
                         </FormControl>
@@ -272,34 +263,36 @@ export default function NarrativesPage() {
               </Form>
             </CardContent>
           </Card>
-          <div className="space-y-6" ref={narrativeRef}>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>{t("Generated Strategic Narrative")}</CardTitle>
-                <Button id="download-button" variant="outline" size="icon" onClick={handleDownloadPdf}>
-                    <Download className="h-4 w-4" />
-                    <span className="sr-only">Download PDF</span>
-                </Button>
-              </CardHeader>
-              <CardContent>
-                {isLoading && (
-                  <div className="flex items-center justify-center p-8">
-                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                  </div>
-                )}
-                {narrative ? (
-                  <div className="prose dark:prose-invert">
-                    <p>{narrative.strategicNarrative}</p>
-                  </div>
-                ) : (
-                  !isLoading && (
-                    <p className="text-muted-foreground">
-                      {t("Your generated narrative will appear here.")}
-                    </p>
-                  )
-                )}
-              </CardContent>
-            </Card>
+          <div className="space-y-6">
+            <div ref={narrativeRef}>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <CardTitle>{t("Generated Strategic Narrative")}</CardTitle>
+                  <Button id="download-button" variant="outline" size="icon" onClick={handleDownloadPdf}>
+                      <Download className="h-4 w-4" />
+                      <span className="sr-only">Download PDF</span>
+                  </Button>
+                </CardHeader>
+                <CardContent>
+                  {isLoading && (
+                    <div className="flex items-center justify-center p-8">
+                      <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                    </div>
+                  )}
+                  {narrative ? (
+                    <div className="prose dark:prose-invert">
+                      <p>{narrative.strategicNarrative}</p>
+                    </div>
+                  ) : (
+                    !isLoading && (
+                      <p className="text-muted-foreground">
+                        {t("Your generated narrative will appear here.")}
+                      </p>
+                    )
+                  )}
+                </CardContent>
+              </Card>
+            </div>
 
             <Card>
               <CardHeader>

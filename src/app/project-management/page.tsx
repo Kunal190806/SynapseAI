@@ -45,7 +45,12 @@ const formSchema = z.object({
 export default function ProjectManagementPage() {
   const { t } = useTranslation();
   const [result, setResult] =
-    useState<AdaptiveProjectManagementOutput | null>(null);
+    useState<AdaptiveProjectManagementOutput | null>({
+        recommendations: "1. Pair Programming for BE Devs: Pair BE Dev 1 with a senior developer to review PRs in real-time, reducing revision rounds and improving code quality.\n2. Task Re-allocation: Shift some of FE Dev 1's upcoming tasks to FE Dev 2 to balance workload and leverage their higher velocity, ensuring front-end work stays on schedule.\n3. Unblock Authentication Dependency: Escalate the authentication service dependency to the platform team lead, emphasizing its critical impact on the project timeline.",
+        riskAssessment: "The primary risk is the back-end dependency on the authentication service, which has already caused a delay. Mitigation: Daily check-ins with the platform team. Secondary risk is BE Dev 1's performance bottleneck. Mitigation: Implement pair programming and provide additional mentorship.",
+        performanceForecast: "With the proposed interventions, the project is forecasted to get back on track by the end of Sprint 4. The velocity is expected to increase to an average of 22 points. The one-week delay can be recovered, leading to an on-time launch.",
+        strategicAlignment: "By addressing these issues, we ensure the 'Project Phoenix' initiative remains on schedule, directly supporting the strategic goal of increasing user activation rates by 20%. Timely launch is critical to realizing this Q4 objective."
+    });
   const [isLoading, setIsLoading] = useState(false);
   const analysisRef = useRef<HTMLDivElement>(null);
 
@@ -53,10 +58,10 @@ export default function ProjectManagementPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      projectDescription: '',
-      teamStructures: '',
-      currentStatus: '',
-      performanceData: '',
+      projectDescription: "Project Phoenix is a Q4 initiative to redesign our mobile application's user onboarding flow. The primary goal is to increase user activation rates by 20% within the first month of launch. The project involves UX/UI redesign, front-end and back-end development, and A/B testing.",
+      teamStructures: "The project is led by a cross-functional team:\n- Core Pod (1 PM, 1 Designer, 2 FE Devs, 1 BE Dev).\n- QA Team (2 Testers).\n- Marketing (1 Product Marketing Manager for launch comms).\nThe Core Pod operates in 2-week sprints.",
+      currentStatus: "Sprint 3 of 6 is complete. The new UI designs are finalized. Front-end development is 50% complete. A key back-end dependency on the new authentication service is blocked, causing a potential 1-week delay. The initial A/B test plan is drafted.",
+      performanceData: "- Sprint 1 & 2 velocity: 18 points (target was 20).\n- BE Dev 1 has a high number of PR revisions, averaging 3 rounds per PR.\n- FE Dev 2 has completed 40% more tasks than FE Dev 1.\n- Current bug count: 5 critical, 12 non-critical.",
     },
   });
 
@@ -68,7 +73,6 @@ export default function ProjectManagementPage() {
       setResult(response);
     } catch (error) {
       console.error('Error generating project management insights:', error);
-      // Optionally, show an error toast to the user
     } finally {
       setIsLoading(false);
     }
@@ -78,10 +82,8 @@ export default function ProjectManagementPage() {
     const element = analysisRef.current;
     if (!element) return;
 
-    // Clone the element to modify it for PDF generation without affecting the live view
     const clone = element.cloneNode(true) as HTMLElement;
     
-    // Create a container and apply a light theme for PDF generation
     const pdfContainer = document.createElement('div');
     pdfContainer.style.position = 'absolute';
     pdfContainer.style.left = '-9999px';
@@ -91,7 +93,6 @@ export default function ProjectManagementPage() {
     pdfContainer.appendChild(clone);
     document.body.appendChild(pdfContainer);
 
-    // Temporarily hide the download button in the cloned element
     const downloadButton = clone.querySelector('#download-button') as HTMLElement;
     if (downloadButton) downloadButton.style.display = 'none';
 
@@ -99,7 +100,7 @@ export default function ProjectManagementPage() {
         const canvas = await html2canvas(clone, {
             scale: 2,
             useCORS: true,
-            backgroundColor: '#ffffff', // Force white background
+            backgroundColor: '#ffffff',
         });
 
         const imgData = canvas.toDataURL('image/png');
@@ -128,7 +129,6 @@ export default function ProjectManagementPage() {
     } catch (error) {
         console.error("Error generating PDF:", error);
     } finally {
-        // Clean up by removing the container from the body
         document.body.removeChild(pdfContainer);
     }
   };
@@ -158,7 +158,6 @@ export default function ProjectManagementPage() {
                         <FormLabel>{t("Project Description")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder={t("e.g., Project Phoenix is a Q4 initiative to redesign our mobile application's user onboarding flow. The primary goal is to increase user activation rates by 20% within the first month of launch. The project involves UX/UI redesign, front-end and back-end development, and A/B testing.")}
                             {...field}
                           />
                         </FormControl>
@@ -174,7 +173,6 @@ export default function ProjectManagementPage() {
                         <FormLabel>{t("Team Structures")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder={t("e.g., The project is led by a cross-functional team:\n- Core Pod (1 PM, 1 Designer, 2 FE Devs, 1 BE Dev).\n- QA Team (2 Testers).\n- Marketing (1 Product Marketing Manager for launch comms).\nThe Core Pod operates in 2-week sprints.")}
                             {...field}
                           />
                         </FormControl>
@@ -190,7 +188,6 @@ export default function ProjectManagementPage() {
                         <FormLabel>{t("Current Status")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder={t("e.g., Sprint 3 of 6 is complete. The new UI designs are finalized. Front-end development is 50% complete. A key back-end dependency on the new authentication service is blocked, causing a potential 1-week delay. The initial A/B test plan is drafted.")}
                             {...field}
                           />
                         </FormControl>
@@ -206,7 +203,6 @@ export default function ProjectManagementPage() {
                         <FormLabel>{t("Performance Data")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder={t("e.g., - Sprint 1 & 2 velocity: 18 points (target was 20).\n- BE Dev 1 has a high number of PR revisions, averaging 3 rounds per PR.\n- FE Dev 2 has completed 40% more tasks than FE Dev 1.\n- Current bug count: 5 critical, 12 non-critical.")}
                             {...field}
                           />
                         </FormControl>
@@ -225,51 +221,53 @@ export default function ProjectManagementPage() {
             </CardContent>
           </Card>
           <div className="space-y-6">
-            <Card ref={analysisRef}>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>{t("AI-Generated Analysis")}</CardTitle>
-                <Button id="download-button" variant="outline" size="icon" onClick={handleDownloadPdf}>
-                    <Download className="h-4 w-4" />
-                    <span className="sr-only">Download PDF</span>
-                </Button>
-              </CardHeader>
-              <CardContent>
-                {isLoading && (
-                  <div className="flex items-center justify-center p-8">
-                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                  </div>
-                )}
-                {result ? (
-                  <div className="prose dark:prose-invert max-w-none space-y-6">
-                    <div>
-                      <h3 className="font-semibold">{t("Recommendations")}</h3>
-                      <p>{result.recommendations}</p>
+            <div ref={analysisRef}>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <CardTitle>{t("AI-Generated Analysis")}</CardTitle>
+                  <Button id="download-button" variant="outline" size="icon" onClick={handleDownloadPdf}>
+                      <Download className="h-4 w-4" />
+                      <span className="sr-only">Download PDF</span>
+                  </Button>
+                </CardHeader>
+                <CardContent>
+                  {isLoading && (
+                    <div className="flex items-center justify-center p-8">
+                      <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
                     </div>
-                    <Separator />
-                    <div>
-                      <h3 className="font-semibold">{t("Risk Assessment")}</h3>
-                      <p>{result.riskAssessment}</p>
+                  )}
+                  {result ? (
+                    <div className="prose dark:prose-invert max-w-none space-y-6">
+                      <div>
+                        <h3 className="font-semibold">{t("Recommendations")}</h3>
+                        <p className="whitespace-pre-line">{result.recommendations}</p>
+                      </div>
+                      <Separator />
+                      <div>
+                        <h3 className="font-semibold">{t("Risk Assessment")}</h3>
+                        <p className="whitespace-pre-line">{result.riskAssessment}</p>
+                      </div>
+                      <Separator />
+                      <div>
+                        <h3 className="font-semibold">{t("Performance Forecast")}</h3>
+                        <p className="whitespace-pre-line">{result.performanceForecast}</p>
+                      </div>
+                      <Separator />
+                      <div>
+                        <h3 className="font-semibold">{t("Strategic Alignment")}</h3>
+                        <p className="whitespace-pre-line">{result.strategicAlignment}</p>
+                      </div>
                     </div>
-                    <Separator />
-                    <div>
-                      <h3 className="font-semibold">{t("Performance Forecast")}</h3>
-                      <p>{result.performanceForecast}</p>
-                    </div>
-                    <Separator />
-                    <div>
-                      <h3 className="font-semibold">{t("Strategic Alignment")}</h3>
-                      <p>{result.strategicAlignment}</p>
-                    </div>
-                  </div>
-                ) : (
-                  !isLoading && (
-                    <p className="text-muted-foreground">
-                      {t("Your generated analysis will appear here.")}
-                    </p>
-                  )
-                )}
-              </CardContent>
-            </Card>
+                  ) : (
+                    !isLoading && (
+                      <p className="text-muted-foreground">
+                        {t("Your generated analysis will appear here.")}
+                      </p>
+                    )
+                  )}
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </main>

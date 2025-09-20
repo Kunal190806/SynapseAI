@@ -13,7 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { Filter, Download } from "lucide-react";
+import { Filter, Download, TestTube } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import AppHeader from "@/components/layout/header";
 import AppNavbar from "@/components/layout/navbar";
@@ -22,6 +22,7 @@ import '@/lib/i18n';
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { useRef } from "react";
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 const projects = [
   {
@@ -115,6 +116,20 @@ const projects = [
     strategicGoal: "Strengthen Strategic Partnerships",
     alignment: "Medium",
   },
+  {
+    name: "Project Titan",
+    status: "On Track",
+    progress: 85,
+    strategicGoal: "Increase ARR",
+    alignment: "High",
+  },
+  {
+    name: "Localization Initiative",
+    status: "On Track",
+    progress: 40,
+    strategicGoal: "Expand into New European Market",
+    alignment: "Medium",
+  }
 ];
 
 const getStatusVariant = (status: string): "success" | "warning" | "destructive" | "secondary" | "outline" => {
@@ -144,10 +159,8 @@ export default function ProjectsPage() {
     const element = projectsRef.current;
     if (!element) return;
 
-    // Clone the element to modify it for PDF generation without affecting the live view
     const clone = element.cloneNode(true) as HTMLElement;
     
-    // Create a container and apply a light theme for PDF generation
     const pdfContainer = document.createElement('div');
     pdfContainer.style.position = 'absolute';
     pdfContainer.style.left = '-9999px';
@@ -157,17 +170,18 @@ export default function ProjectsPage() {
     pdfContainer.appendChild(clone);
     document.body.appendChild(pdfContainer);
 
-    // Temporarily hide the download button in the cloned element
     const downloadButton = clone.querySelector('#download-button') as HTMLElement;
     if (downloadButton) downloadButton.style.display = 'none';
      const filterButton = clone.querySelector('#filter-button') as HTMLElement;
     if (filterButton) filterButton.style.display = 'none';
+    const simButton = clone.querySelector('#simulation-button') as HTMLElement;
+    if (simButton) simButton.style.display = 'none';
 
     try {
         const canvas = await html2canvas(clone, {
             scale: 2,
             useCORS: true,
-            backgroundColor: '#ffffff', // Force white background
+            backgroundColor: '#ffffff',
         });
 
         const imgData = canvas.toDataURL('image/png');
@@ -196,7 +210,6 @@ export default function ProjectsPage() {
     } catch (error) {
         console.error("Error generating PDF:", error);
     } finally {
-        // Clean up by removing the container from the body
         document.body.removeChild(pdfContainer);
     }
   };
@@ -207,63 +220,84 @@ export default function ProjectsPage() {
       <AppNavbar />
       <main className="flex-1 p-4 md:p-6 lg:p-8">
         <div className="flex flex-col gap-6">
-          <Card ref={projectsRef}>
-            <CardHeader className="flex flex-row items-center justify-between">
-                <div>
-                    <CardTitle>{t("Projects")}</CardTitle>
-                    <CardDescription>
-                    {t("Display of all active projects, their status, and progress towards strategic goals.")}
-                    </CardDescription>
-                </div>
-                <div className="flex items-center gap-2">
-                    <Button id="filter-button" variant="outline" className="hidden sm:flex">
-                        <Filter className="mr-2 h-4 w-4" />
-                        {t("Filter Projects")}
-                    </Button>
-                    <Button id="download-button" variant="outline" size="icon" onClick={handleDownloadPdf}>
-                        <Download className="h-4 w-4" />
-                        <span className="sr-only">Download PDF</span>
-                    </Button>
-                </div>
-            </CardHeader>
-            <CardContent>
-              <ScrollArea className="w-full whitespace-nowrap">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[200px]">{t("Project Name")}</TableHead>
-                      <TableHead>{t("Status")}</TableHead>
-                      <TableHead>{t("Progress")}</TableHead>
-                      <TableHead className="hidden md:table-cell">{t("Strategic Goal")}</TableHead>
-                      <TableHead className="text-right hidden sm:table-cell">{t("Alignment")}</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {projects.map((project) => (
-                      <TableRow key={project.name}>
-                        <TableCell className="font-medium">{t(project.name)}</TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={getStatusVariant(project.status)}
-                          >
-                            {t(project.status)}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <Progress value={project.progress} className="w-full max-w-[100px] h-2" />
-                            <span className="text-muted-foreground text-sm">{project.progress}%</span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">{t(project.strategicGoal)}</TableCell>
-                        <TableCell className="text-right hidden sm:table-cell">{t(project.alignment)}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-                <ScrollBar orientation="horizontal" />
-              </ScrollArea>
-            </CardContent>
+          <Card>
+             <div ref={projectsRef} className="p-6 pt-0">
+                <CardHeader className="pl-0 flex flex-row items-center justify-between">
+                    <div>
+                        <CardTitle>{t("Projects")}</CardTitle>
+                        <CardDescription>
+                        {t("Display of all active projects, their status, and progress towards strategic goals.")}
+                        </CardDescription>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button id="simulation-button" variant="outline" size="sm">
+                              <TestTube className="h-4 w-4 mr-2" />
+                              {t("Simulate")}
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Simulation Complete</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Pausing 'Project Nova' and reallocating its two developers to 'Orion' and 'Compliance Framework' could mitigate their 'At Risk' status. This simulation predicts 'Orion' will be back on track in 3 weeks, and 'Compliance' risk will be lowered, with only a minor impact on the 'Improve Customer Satisfaction' goal.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogAction>Acknowledge</AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                        <Button id="filter-button" variant="outline" className="hidden sm:flex">
+                            <Filter className="mr-2 h-4 w-4" />
+                            {t("Filter Projects")}
+                        </Button>
+                        <Button id="download-button" variant="outline" size="icon" onClick={handleDownloadPdf}>
+                            <Download className="h-4 w-4" />
+                            <span className="sr-only">Download PDF</span>
+                        </Button>
+                    </div>
+                </CardHeader>
+                <CardContent className="pl-0">
+                  <ScrollArea className="w-full whitespace-nowrap">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="w-[200px]">{t("Project Name")}</TableHead>
+                          <TableHead>{t("Status")}</TableHead>
+                          <TableHead>{t("Progress")}</TableHead>
+                          <TableHead className="hidden md:table-cell">{t("Strategic Goal")}</TableHead>
+                          <TableHead className="text-right hidden sm:table-cell">{t("Alignment")}</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {projects.map((project) => (
+                          <TableRow key={project.name}>
+                            <TableCell className="font-medium">{t(project.name)}</TableCell>
+                            <TableCell>
+                              <Badge
+                                variant={getStatusVariant(project.status)}
+                              >
+                                {t(project.status)}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-2">
+                                <Progress value={project.progress} className="w-full max-w-[100px] h-2" />
+                                <span className="text-muted-foreground text-sm">{project.progress}%</span>
+                              </div>
+                            </TableCell>
+                            <TableCell className="hidden md:table-cell">{t(project.strategicGoal)}</TableCell>
+                            <TableCell className="text-right hidden sm:table-cell">{t(project.alignment)}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                    <ScrollBar orientation="horizontal" />
+                  </ScrollArea>
+                </CardContent>
+             </div>
           </Card>
         </div>
       </main>

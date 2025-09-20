@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Target, Zap, Rocket, Handshake, TrendingUp, Users, Heart, Globe, Lightbulb, Download } from "lucide-react";
+import { Target, Zap, Rocket, Handshake, TrendingUp, Users, Heart, Globe, Lightbulb, Download, TestTube } from "lucide-react";
 import AppHeader from "@/components/layout/header";
 import AppNavbar from "@/components/layout/navbar";
 import { useTranslation } from "react-i18next";
@@ -14,6 +14,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 
 const getStatusVariant = (status: string): "success" | "warning" | "destructive" | "secondary" | "outline" => {
@@ -45,6 +46,7 @@ const strategicGoals = [
       { name: "Project Phoenix", alignment: "High", status: "On Track" },
       { name: "QuantumLeap", alignment: "High", status: "In Progress" },
       { name: "Apollo", alignment: "Medium", status: "In Progress" },
+      { name: "Project Titan", alignment: "High", status: "On Track" },
     ],
   },
   {
@@ -77,6 +79,7 @@ const strategicGoals = [
     projects: [
       { name: "Market Entry Alpha", alignment: "High", status: "In Progress" },
       { name: "Compliance Framework", alignment: "High", status: "At Risk" },
+      { name: "Localization Initiative", alignment: "Medium", status: "On Track" },
     ],
   },
   {
@@ -99,7 +102,8 @@ const purposeGoals = [
       description: "Encourage experimentation and creative problem-solving at all levels.",
       projects: [
         { name: "Innovation Guild", status: "On Track" },
-        { name: "Internal Hackathon", status: "Completed" },
+        { name: "Internal Hackathon '24", status: "Completed" },
+        { name: "Blue Sky Ideation Board", status: "In Progress" },
       ]
     },
     {
@@ -110,6 +114,7 @@ const purposeGoals = [
         projects: [
           { name: "Carbon Neutral Initiative", status: "In Progress" },
           { name: "Supplier Sustainability Audit", status: "On Track" },
+          { name: "Green Commute Program", status: "Completed" },
         ]
       },
       {
@@ -120,6 +125,7 @@ const purposeGoals = [
         projects: [
           { name: "Customer Voice Program", status: "On Track" },
           { name: "CX Journey Mapping", status: "Completed" },
+          { name: "NPS Improvement Initiative", status: "In Progress" },
         ]
       }
 ]
@@ -132,10 +138,8 @@ export default function GoalsPage() {
     const element = goalsRef.current;
     if (!element) return;
 
-    // Clone the element to modify it for PDF generation without affecting the live view
     const clone = element.cloneNode(true) as HTMLElement;
     
-    // Create a container and apply a light theme for PDF generation
     const pdfContainer = document.createElement('div');
     pdfContainer.style.position = 'absolute';
     pdfContainer.style.left = '-9999px';
@@ -145,15 +149,16 @@ export default function GoalsPage() {
     pdfContainer.appendChild(clone);
     document.body.appendChild(pdfContainer);
 
-    // Temporarily hide the download button in the cloned element
     const downloadButton = clone.querySelector('#download-button') as HTMLElement;
     if (downloadButton) downloadButton.style.display = 'none';
+    const simButton = clone.querySelector('#simulation-button') as HTMLElement;
+    if (simButton) simButton.style.display = 'none';
 
     try {
         const canvas = await html2canvas(clone, {
             scale: 2,
             useCORS: true,
-            backgroundColor: '#ffffff', // Force white background
+            backgroundColor: '#ffffff',
         });
 
         const imgData = canvas.toDataURL('image/png');
@@ -182,7 +187,6 @@ export default function GoalsPage() {
     } catch (error) {
         console.error("Error generating PDF:", error);
     } finally {
-        // Clean up by removing the container from the body
         document.body.removeChild(pdfContainer);
     }
   };
@@ -193,85 +197,108 @@ export default function GoalsPage() {
       <AppNavbar />
       <main className="flex-1 p-4 md:p-6 lg:p-8">
         <div className="flex flex-col gap-6">
-          <Card ref={goalsRef}>
-            <CardHeader className="flex flex-row items-center justify-between">
+          <Card>
+            <div ref={goalsRef} className="p-6 pt-0">
+              <CardHeader className="pl-0 flex flex-row items-center justify-between">
+                  <div>
+                      <CardTitle>{t("Purpose & Goals")}</CardTitle>
+                      <CardDescription>
+                          {t("Evaluate every action against both strategic goals and organizational values to ensure every action has a purpose.")}
+                      </CardDescription>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button id="simulation-button" variant="outline" size="sm">
+                          <TestTube className="h-4 w-4 mr-2" />
+                          {t("Run Simulation")}
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Simulation Complete</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Simulating a 10% budget reallocation from "Enhance Operational Efficiency" to "Increase ARR" projects suggests a potential 5% uplift in Q4 revenue, but it may delay the "Orion" project by 3 weeks, increasing its risk profile.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogAction>Acknowledge</AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                    <Button id="download-button" variant="outline" size="icon" onClick={handleDownloadPdf}>
+                        <Download className="h-4 w-4" />
+                        <span className="sr-only">Download PDF</span>
+                    </Button>
+                  </div>
+              </CardHeader>
+              <CardContent className="space-y-8 pl-0">
                 <div>
-                    <CardTitle>{t("Purpose & Goals")}</CardTitle>
-                    <CardDescription>
-                        {t("Evaluate every action against both strategic goals and organizational values to ensure every action has a purpose.")}
-                    </CardDescription>
-                </div>
-                <Button id="download-button" variant="outline" size="icon" onClick={handleDownloadPdf}>
-                    <Download className="h-4 w-4" />
-                    <span className="sr-only">Download PDF</span>
-                </Button>
-            </CardHeader>
-            <CardContent className="space-y-8">
-              <div>
-                <h3 className="text-xl font-semibold mb-4">{t("Strategic Goals")}</h3>
-                <Accordion type="single" collapsible className="w-full">
-                  {strategicGoals.map((goal) => (
-                    <AccordionItem value={goal.id} key={goal.id}>
-                      <AccordionTrigger>
-                        <div className="flex items-center gap-4 w-full">
-                          <goal.icon className="h-6 w-6 text-primary" />
-                          <div className="flex-1 text-left">
-                            <p className="font-semibold">{t(goal.title)}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <Progress value={goal.progress} className="w-full max-w-xs h-2" />
-                              <span className="text-sm font-medium text-muted-foreground">{goal.progress}%</span>
+                  <h3 className="text-xl font-semibold mb-4">{t("Strategic Goals")}</h3>
+                  <Accordion type="single" collapsible className="w-full">
+                    {strategicGoals.map((goal) => (
+                      <AccordionItem value={goal.id} key={goal.id}>
+                        <AccordionTrigger>
+                          <div className="flex items-center gap-4 w-full">
+                            <goal.icon className="h-6 w-6 text-primary" />
+                            <div className="flex-1 text-left">
+                              <p className="font-semibold">{t(goal.title)}</p>
+                              <div className="flex items-center gap-2 mt-1">
+                                <Progress value={goal.progress} className="w-full max-w-xs h-2" />
+                                <span className="text-sm font-medium text-muted-foreground">{goal.progress}%</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <div className="pl-10">
-                          <h4 className="font-semibold mb-2 text-muted-foreground">{t("Aligned Projects:")}</h4>
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <div className="pl-10">
+                            <h4 className="font-semibold mb-2 text-muted-foreground">{t("Aligned Projects:")}</h4>
+                            <ul className="space-y-2">
+                              {goal.projects.map((project, index) => (
+                                <li key={index} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-2 rounded-md bg-muted/50 gap-2">
+                                  <span className="font-medium">{t(project.name)}</span>
+                                  <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
+                                    <Badge variant="outline">{t("Alignment")}: {t(project.alignment)}</Badge>
+                                    <Badge variant={getStatusVariant(project.status)}>{t(project.status)}</Badge>
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-4">{t("Core Values & Mission")}</h3>
+                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    {purposeGoals.map((goal) => (
+                      <Card key={goal.id}>
+                        <CardHeader>
+                          <div className="flex items-center gap-3">
+                              <goal.icon className="h-7 w-7 text-accent" />
+                              <CardTitle className="text-lg">{t(goal.title)}</CardTitle>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-muted-foreground mb-4">{t(goal.description)}</p>
+                          <h4 className="font-semibold mb-2 text-sm">{t("Supporting Initiatives:")}</h4>
                           <ul className="space-y-2">
                             {goal.projects.map((project, index) => (
-                              <li key={index} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-2 rounded-md bg-muted/50 gap-2">
+                              <li key={index} className="flex items-center justify-between text-sm">
                                 <span className="font-medium">{t(project.name)}</span>
-                                <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
-                                  <Badge variant="outline">{t("Alignment")}: {t(project.alignment)}</Badge>
-                                  <Badge variant={getStatusVariant(project.status)}>{t(project.status)}</Badge>
-                                </div>
+                                <Badge variant={getStatusVariant(project.status)}>{t(project.status)}</Badge>
                               </li>
                             ))}
                           </ul>
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-4">{t("Core Values & Mission")}</h3>
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {purposeGoals.map((goal) => (
-                    <Card key={goal.id}>
-                      <CardHeader>
-                        <div className="flex items-center gap-3">
-                            <goal.icon className="h-7 w-7 text-accent" />
-                            <CardTitle className="text-lg">{t(goal.title)}</CardTitle>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-muted-foreground mb-4">{t(goal.description)}</p>
-                        <h4 className="font-semibold mb-2 text-sm">{t("Supporting Initiatives:")}</h4>
-                        <ul className="space-y-2">
-                          {goal.projects.map((project, index) => (
-                            <li key={index} className="flex items-center justify-between text-sm">
-                              <span className="font-medium">{t(project.name)}</span>
-                              <Badge variant={getStatusVariant(project.status)}>{t(project.status)}</Badge>
-                            </li>
-                          ))}
-                        </ul>
-                      </CardContent>
-                    </Card>
-                  ))}
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </CardContent>
+              </CardContent>
+            </div>
           </Card>
         </div>
       </main>

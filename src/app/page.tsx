@@ -14,7 +14,7 @@ import { Progress } from "@/components/ui/progress";
 import AlignmentChart from "@/components/dashboard/alignment-chart";
 import ProgressChart from "@/components/dashboard/progress-chart";
 import TaskDistributionChart from "@/components/dashboard/task-distribution-chart";
-import { Activity, Target, CheckCircle, BrainCircuit, Download } from 'lucide-react';
+import { Activity, Target, CheckCircle, BrainCircuit, Download, TestTube } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -31,13 +31,25 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 const recentActivities = [
-  { project: "Project Phoenix", task: "Deploy to staging", status: "Completed", user: "Alice" },
-  { project: "QuantumLeap", task: "User feedback session", status: "In Progress", user: "Bob" },
-  { project: "Project Phoenix", task: "Update documentation", status: "Completed", user: "Alice" },
-  { project: "Project Nova", task: "Initial design mockups", status: "On Hold", user: "Charlie" },
-  { project: "QuantumLeap", task: "Fix login bug", status: "In Progress", user: "David" },
+    { project: "Project Phoenix", task: "Deploy to staging", status: "Completed", user: "Alice" },
+    { project: "QuantumLeap", task: "User feedback session", status: "In Progress", user: "Bob" },
+    { project: "Project Nova", task: "Initial design mockups", status: "On Hold", user: "Charlie" },
+    { project: "Orion", task: "Fix critical API bug", status: "At Risk", user: "David" },
+    { project: "Helios", task: "Finalize Q4 budget", status: "Delayed", user: "Eve" },
+    { project: "Customer Voice", task: "Analyze survey results", status: "On Track", user: "Frank" },
+    { project: "AutomateIt", task: "Onboard new team members", status: "Completed", user: "Grace" },
 ];
 
 const getStatusVariant = (status: string): "success" | "warning" | "destructive" | "secondary" | "outline" => {
@@ -67,28 +79,27 @@ export default function DashboardPage() {
     const element = dashboardRef.current;
     if (!element) return;
 
-    // Clone the element to modify it for PDF generation without affecting the live view
     const clone = element.cloneNode(true) as HTMLElement;
     
-    // Create a container and apply a light theme for PDF generation
     const pdfContainer = document.createElement('div');
     pdfContainer.style.position = 'absolute';
     pdfContainer.style.left = '-9999px';
     pdfContainer.style.top = '0';
-    pdfContainer.style.width = '1024px'; // A reasonable width for desktop view
-    pdfContainer.classList.add('light'); // Force light theme for PDF
+    pdfContainer.style.width = '1024px';
+    pdfContainer.classList.add('light'); 
     pdfContainer.appendChild(clone);
     document.body.appendChild(pdfContainer);
 
-    // Temporarily hide the download button in the cloned element
     const downloadButton = clone.querySelector('#download-button') as HTMLElement;
     if (downloadButton) downloadButton.style.display = 'none';
+    const simButton = clone.querySelector('#simulation-button') as HTMLElement;
+    if (simButton) simButton.style.display = 'none';
 
     try {
         const canvas = await html2canvas(clone, {
             scale: 2,
             useCORS: true,
-            backgroundColor: '#ffffff', // Force white background
+            backgroundColor: '#ffffff',
         });
 
         const imgData = canvas.toDataURL('image/png');
@@ -117,7 +128,6 @@ export default function DashboardPage() {
     } catch (error) {
         console.error("Error generating PDF:", error);
     } finally {
-        // Clean up by removing the container from the body
         document.body.removeChild(pdfContainer);
     }
   };
@@ -128,7 +138,26 @@ export default function DashboardPage() {
       <AppHeader />
       <AppNavbar />
       <main className="flex-1 p-4 md:p-6 lg:p-8">
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-end gap-2 mb-4">
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button id="simulation-button" variant="outline" size="sm">
+                  <TestTube className="h-4 w-4 mr-2" />
+                  {t("Run Scenario")}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Simulation Complete</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Based on current dashboard data, shifting 10% of the budget from 'Enhance Operational Efficiency' to 'Increase ARR' projects is projected to increase overall revenue by 3% in the next quarter. This may slightly delay the 'AutomateIt' project by 2 weeks but is expected to yield a higher ROI.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogAction>Acknowledge</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
             <Button id="download-button" variant="outline" size="sm" onClick={handleDownloadPdf}>
                 <Download className="h-4 w-4 mr-2" />
                 {t("Download PDF")}

@@ -192,7 +192,19 @@ const resources = {
       "Sales Projections Q4": "Sales Projections Q4",
       "New Feature Launch": "New Feature Launch",
       "User Research Synthesis": "User Research Synthesis",
-      "Download PDF": "Download PDF"
+      "Download PDF": "Download PDF",
+      "Project Titan": "Project Titan",
+      "Localization Initiative": "Localization Initiative",
+      "Internal Hackathon '24": "Internal Hackathon '24",
+      "Blue Sky Ideation Board": "Blue Sky Ideation Board",
+      "Green Commute Program": "Green Commute Program",
+      "NPS Improvement Initiative": "NPS Improvement Initiative",
+      "Fix critical API bug": "Fix critical API bug",
+      "Finalize Q4 budget": "Finalize Q4 budget",
+      "Analyze survey results": "Analyze survey results",
+      "Onboard new team members": "Onboard new team members",
+      "Run Scenario": "Run Scenario",
+      "Simulate": "Simulate"
     }
   },
   hi: {
@@ -376,7 +388,19 @@ const resources = {
       "Sales Projections Q4": "बिक्री अनुमान Q4",
       "New Feature Launch": "नई सुविधा लॉन्च",
       "User Research Synthesis": "उपयोगकर्ता अनुसंधान संश्लेषण",
-      "Download PDF": "पीडीएफ डाउनलोड करें"
+      "Download PDF": "पीडीएफ डाउनलोड करें",
+      "Project Titan": "प्रोजेक्ट टाइटन",
+      "Localization Initiative": "स्थानीयकरण पहल",
+      "Internal Hackathon '24": "आंतरिक हैकथॉन '24",
+      "Blue Sky Ideation Board": "ब्लू स्काई आइडिएशन बोर्ड",
+      "Green Commute Program": "ग्रीन कम्यूट प्रोग्राम",
+      "NPS Improvement Initiative": "एनपीएस सुधार पहल",
+      "Fix critical API bug": "महत्वपूर्ण एपीआई बग ठीक करें",
+      "Finalize Q4 budget": "Q4 बजट को अंतिम रूप दें",
+      "Analyze survey results": "सर्वेक्षण परिणामों का विश्लेषण करें",
+      "Onboard new team members": "नई टीम के सदस्यों को ऑनबोर्ड करें",
+      "Run Scenario": "परिदृश्य चलाएँ",
+      "Simulate": "अनुकरण"
     }
   },
   mr: {
@@ -560,7 +584,19 @@ const resources = {
         "Sales Projections Q4": "विक्री अंदाज Q4",
         "New Feature Launch": "नवीन वैशिष्ट्य लॉन्च",
         "User Research Synthesis": "वापरकर्ता संशोधन संश्लेषण",
-        "Download PDF": "पीडीएफ डाउनलोड करा"
+        "Download PDF": "पीडीएफ डाउनलोड करा",
+        "Project Titan": "प्रकल्प टायटन",
+        "Localization Initiative": "स्थानिकीकरण पुढाकार",
+        "Internal Hackathon '24": "अंतर्गत हॅकेथॉन '२४",
+        "Blue Sky Ideation Board": "ब्लू स्काय आयडिएशन बोर्ड",
+        "Green Commute Program": "ग्रीन कम्युट प्रोग्राम",
+        "NPS Improvement Initiative": "एनपीएस सुधारणा पुढाकार",
+        "Fix critical API bug": "गंभीर API बग दुरुस्त करा",
+        "Finalize Q4 budget": "Q4 बजेट अंतिम करा",
+        "Analyze survey results": "सर्वेक्षण परिणामांचे विश्लेषण करा",
+        "Onboard new team members": "नवीन संघ सदस्यांना ऑनबोर्ड करा",
+        "Run Scenario": "परिदृश्य चालवा",
+        "Simulate": "अनुकरण करा"
     }
   }
 };
