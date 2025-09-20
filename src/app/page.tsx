@@ -14,7 +14,7 @@ import { Progress } from "@/components/ui/progress";
 import AlignmentChart from "@/components/dashboard/alignment-chart";
 import ProgressChart from "@/components/dashboard/progress-chart";
 import TaskDistributionChart from "@/components/dashboard/task-distribution-chart";
-import { Activity, Target, CheckCircle, BrainCircuit } from 'lucide-react';
+import { Activity, Target, CheckCircle, BrainCircuit, Download } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -27,6 +27,10 @@ import AppHeader from "@/components/layout/header";
 import AppNavbar from "@/components/layout/navbar";
 import { useTranslation } from "react-i18next";
 import '@/lib/i18n';
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import { useRef } from "react";
+import { Button } from "@/components/ui/button";
 
 const recentActivities = [
   { project: "Project Phoenix", task: "Deploy to staging", status: "Completed", user: "Alice" },
@@ -57,12 +61,63 @@ const getStatusVariant = (status: string): "success" | "warning" | "destructive"
 
 export default function DashboardPage() {
   const { t } = useTranslation();
+  const dashboardRef = useRef<HTMLDivElement>(null);
+
+  const handleDownloadPdf = () => {
+    const input = dashboardRef.current;
+    if (!input) return;
+
+    // Temporarily hide the download button so it doesn't appear in the PDF
+    const downloadButton = input.querySelector('#download-button') as HTMLElement;
+    if(downloadButton) downloadButton.style.display = 'none';
+
+    html2canvas(input, { scale: 2 }).then((canvas) => {
+        if(downloadButton) downloadButton.style.display = 'flex'; // Show it again
+
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+        const ratio = canvasWidth / canvasHeight;
+        let width = pdfWidth;
+        let height = width / ratio;
+        
+        if (height > pdfHeight) {
+            height = pdfHeight;
+            width = height * ratio;
+        }
+
+        let position = 0;
+        let imgHeight = canvas.height * pdfWidth / canvas.width;
+        let heightLeft = imgHeight;
+        
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, imgHeight);
+        heightLeft -= pdfHeight;
+
+        while (heightLeft >= 0) {
+            position = heightLeft - imgHeight;
+            pdf.addPage();
+            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+            heightLeft -= pdfHeight;
+        }
+
+        pdf.save('synapse-dashboard.pdf');
+    });
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
       <AppHeader />
       <AppNavbar />
-      <main className="flex-1 p-4 md:p-6 lg:p-8">
+      <main className="flex-1 p-4 md:p-6 lg:p-8" ref={dashboardRef}>
+        <div className="flex justify-end mb-4">
+            <Button id="download-button" variant="outline" size="sm" onClick={handleDownloadPdf}>
+                <Download className="h-4 w-4 mr-2" />
+                {t("Download PDF")}
+            </Button>
+        </div>
         <div className="flex flex-col gap-6">
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             <StatCard

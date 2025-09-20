@@ -13,12 +13,15 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { Filter } from "lucide-react";
+import { Filter, Download } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import AppHeader from "@/components/layout/header";
 import AppNavbar from "@/components/layout/navbar";
 import { useTranslation } from "react-i18next";
 import '@/lib/i18n';
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import { useRef } from "react";
 
 const projects = [
   {
@@ -135,6 +138,38 @@ const getStatusVariant = (status: string): "success" | "warning" | "destructive"
 
 export default function ProjectsPage() {
   const { t } = useTranslation();
+  const projectsRef = useRef<HTMLDivElement>(null);
+
+  const handleDownloadPdf = () => {
+    const input = projectsRef.current;
+    if (!input) return;
+
+    html2canvas(input, { scale: 2 }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
+      const ratio = canvasWidth / pdfWidth;
+      const height = canvasHeight / ratio;
+
+      let position = 0;
+      let heightLeft = height;
+      
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, height);
+      heightLeft -= pdfHeight;
+      
+      while (heightLeft >= 0) {
+          position = heightLeft - height;
+          pdf.addPage();
+          pdf.addImage(imgData, "PNG", 0, position, pdfWidth, height);
+          heightLeft -= pdfHeight;
+      }
+      
+      pdf.save("synapse-projects.pdf");
+    });
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -142,7 +177,7 @@ export default function ProjectsPage() {
       <AppNavbar />
       <main className="flex-1 p-4 md:p-6 lg:p-8">
         <div className="flex flex-col gap-6">
-          <Card>
+          <Card ref={projectsRef}>
             <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                     <CardTitle>{t("Projects")}</CardTitle>
@@ -150,10 +185,16 @@ export default function ProjectsPage() {
                     {t("Display of all active projects, their status, and progress towards strategic goals.")}
                     </CardDescription>
                 </div>
-                <Button variant="outline" className="hidden sm:flex">
-                    <Filter className="mr-2 h-4 w-4" />
-                    {t("Filter Projects")}
-                </Button>
+                <div className="flex items-center gap-2">
+                    <Button variant="outline" className="hidden sm:flex">
+                        <Filter className="mr-2 h-4 w-4" />
+                        {t("Filter Projects")}
+                    </Button>
+                    <Button variant="outline" size="icon" onClick={handleDownloadPdf}>
+                        <Download className="h-4 w-4" />
+                        <span className="sr-only">Download PDF</span>
+                    </Button>
+                </div>
             </CardHeader>
             <CardContent>
               <ScrollArea className="w-full whitespace-nowrap">

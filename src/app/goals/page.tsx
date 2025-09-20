@@ -5,11 +5,16 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Target, Zap, Rocket, Handshake, TrendingUp, Users, Heart, Globe, Lightbulb } from "lucide-react";
+import { Target, Zap, Rocket, Handshake, TrendingUp, Users, Heart, Globe, Lightbulb, Download } from "lucide-react";
 import AppHeader from "@/components/layout/header";
 import AppNavbar from "@/components/layout/navbar";
 import { useTranslation } from "react-i18next";
 import '@/lib/i18n';
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import { useRef } from "react";
+import { Button } from "@/components/ui/button";
+
 
 const getStatusVariant = (status: string): "success" | "warning" | "destructive" | "secondary" | "outline" => {
     switch (status) {
@@ -121,6 +126,39 @@ const purposeGoals = [
 
 export default function GoalsPage() {
   const { t } = useTranslation();
+  const goalsRef = useRef<HTMLDivElement>(null);
+
+  const handleDownloadPdf = () => {
+    const input = goalsRef.current;
+    if (!input) return;
+
+    html2canvas(input, { scale: 2 }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
+      const ratio = canvasWidth / canvasHeight;
+      const width = pdfWidth;
+      const height = width / ratio;
+
+      let position = 0;
+      let heightLeft = canvasHeight;
+      
+      pdf.addImage(imgData, "PNG", 0, position, width, height);
+      heightLeft -= pdf.internal.pageSize.getHeight() * (canvasWidth/width) ;
+      
+      while (heightLeft >= 0) {
+          position = heightLeft - canvasHeight;
+          pdf.addPage();
+          pdf.addImage(imgData, "PNG", 0, position, width, height);
+          heightLeft -= pdf.internal.pageSize.getHeight() * (canvasWidth/width) ;
+      }
+      
+      pdf.save("synapse-goals.pdf");
+    });
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -128,12 +166,18 @@ export default function GoalsPage() {
       <AppNavbar />
       <main className="flex-1 p-4 md:p-6 lg:p-8">
         <div className="flex flex-col gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>{t("Purpose & Goals")}</CardTitle>
-              <CardDescription>
-                {t("Evaluate every action against both strategic goals and organizational values to ensure every action has a purpose.")}
-              </CardDescription>
+          <Card ref={goalsRef}>
+            <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                    <CardTitle>{t("Purpose & Goals")}</CardTitle>
+                    <CardDescription>
+                        {t("Evaluate every action against both strategic goals and organizational values to ensure every action has a purpose.")}
+                    </CardDescription>
+                </div>
+                <Button variant="outline" size="icon" onClick={handleDownloadPdf}>
+                    <Download className="h-4 w-4" />
+                    <span className="sr-only">Download PDF</span>
+                </Button>
             </CardHeader>
             <CardContent className="space-y-8">
               <div>

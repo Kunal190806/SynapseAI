@@ -1,7 +1,7 @@
 // src/app/project-management/page.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -26,12 +26,14 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Download } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import AppHeader from '@/components/layout/header';
 import AppNavbar from '@/components/layout/navbar';
 import { useTranslation } from 'react-i18next';
 import '@/lib/i18n';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const formSchema = z.object({
   projectDescription: z.string().min(1, 'Project description is required.'),
@@ -45,6 +47,8 @@ export default function ProjectManagementPage() {
   const [result, setResult] =
     useState<AdaptiveProjectManagementOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const analysisRef = useRef<HTMLDivElement>(null);
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -69,6 +73,37 @@ export default function ProjectManagementPage() {
       setIsLoading(false);
     }
   }
+
+  const handleDownloadPdf = () => {
+    const input = analysisRef.current;
+    if (!input) return;
+
+    html2canvas(input, { scale: 2 }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
+      const ratio = canvasWidth / pdfWidth;
+      const height = canvasHeight / ratio;
+
+      let position = 0;
+      let heightLeft = height;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, height);
+      heightLeft -= pdfHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - height;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, height);
+        heightLeft -= pdfHeight;
+      }
+      
+      pdf.save('synapse-adaptive-management.pdf');
+    });
+  };
 
   return (
      <div className="flex flex-col min-h-screen">
@@ -161,9 +196,13 @@ export default function ProjectManagementPage() {
             </CardContent>
           </Card>
           <div className="space-y-6">
-            <Card>
-              <CardHeader>
+            <Card ref={analysisRef}>
+              <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>{t("AI-Generated Analysis")}</CardTitle>
+                <Button variant="outline" size="icon" onClick={handleDownloadPdf}>
+                    <Download className="h-4 w-4" />
+                    <span className="sr-only">Download PDF</span>
+                </Button>
               </CardHeader>
               <CardContent>
                 {isLoading && (

@@ -1,7 +1,7 @@
 // src/app/narratives/page.tsx
 'use client';
 
-import {useState} from 'react';
+import {useState, useRef} from 'react';
 import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';
@@ -29,11 +29,13 @@ import {
 } from '@/components/ui/form';
 import {Input} from '@/components/ui/input';
 import {Textarea} from '@/components/ui/textarea';
-import {Loader2, Activity, Target, CheckCircle, BrainCircuit} from 'lucide-react';
+import {Loader2, Activity, Target, CheckCircle, BrainCircuit, Download} from 'lucide-react';
 import AppHeader from '@/components/layout/header';
 import AppNavbar from '@/components/layout/navbar';
 import { useTranslation } from 'react-i18next';
 import '@/lib/i18n';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 
 const formSchema = z.object({
@@ -64,6 +66,7 @@ export default function NarrativesPage() {
   const [narrative, setNarrative] =
     useState<GenerateStrategicNarrativeOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const narrativeRef = useRef<HTMLDivElement>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -90,6 +93,37 @@ export default function NarrativesPage() {
       setIsLoading(false);
     }
   }
+
+  const handleDownloadPdf = () => {
+    const input = narrativeRef.current;
+    if (!input) return;
+
+    html2canvas(input, { scale: 2 }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
+      const ratio = canvasWidth / pdfWidth;
+      const height = canvasHeight / ratio;
+
+      let position = 0;
+      let heightLeft = height;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, height);
+      heightLeft -= pdfHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - height;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, height);
+        heightLeft -= pdfHeight;
+      }
+      
+      pdf.save('synapse-narrative.pdf');
+    });
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -210,10 +244,14 @@ export default function NarrativesPage() {
               </Form>
             </CardContent>
           </Card>
-          <div className="space-y-6">
+          <div className="space-y-6" ref={narrativeRef}>
             <Card>
-              <CardHeader>
+              <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>{t("Generated Strategic Narrative")}</CardTitle>
+                <Button variant="outline" size="icon" onClick={handleDownloadPdf}>
+                    <Download className="h-4 w-4" />
+                    <span className="sr-only">Download PDF</span>
+                </Button>
               </CardHeader>
               <CardContent>
                 {isLoading && (
