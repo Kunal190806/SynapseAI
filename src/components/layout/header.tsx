@@ -25,29 +25,15 @@ import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import React from "react";
 import Logo from "@/components/logo";
-import { getAuth, signOut } from "firebase/auth";
-import { app } from "@/lib/firebase";
-import { useRouter } from "next/navigation";
 
 export default function AppHeader() {
   const userAvatar = PlaceHolderImages.find(img => img.id === 'user-avatar');
   const { setTheme, theme } = useTheme();
   const [isClient, setIsClient] = React.useState(false);
-  const router = useRouter();
-  const auth = getAuth(app);
 
   React.useEffect(() => {
     setIsClient(true);
   }, []);
-
-    const handleLogout = async () => {
-        try {
-            await signOut(auth);
-            router.push('/auth/sign-in');
-        } catch (error) {
-            console.error("Error signing out: ", error);
-        }
-    };
 
   return (
     <header className={cn(
@@ -136,8 +122,6 @@ export default function AppHeader() {
                     <Link href="/support" passHref>
                       <DropdownMenuItem>Support</DropdownMenuItem>
                     </Link>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onSelect={handleLogout}>Logout</DropdownMenuItem>
                 </DropdownMenuContent>
                 </DropdownMenu>
               </>
