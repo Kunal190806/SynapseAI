@@ -2,7 +2,7 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { User, Bell, LayoutDashboard, Goal, KanbanSquare, FileText, Lightbulb } from "lucide-react";
+import { User, Bell, LayoutDashboard, Goal, KanbanSquare, FileText, Lightbulb, TestTube } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,10 +19,11 @@ import { cn } from "@/lib/utils";
 
 const menuItems = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '#', label: 'Goal Mapping', icon: Goal },
-  { href: '#', label: 'Projects', icon: KanbanSquare },
-  { href: '#', label: 'Narratives', icon: FileText },
-  { href: '#', label: 'Insights', icon: Lightbulb },
+  { href: '/goals', label: 'Goal Mapping', icon: Goal },
+  { href: '/projects', label: 'Projects', icon: KanbanSquare },
+  { href: '/narratives', label: 'Narratives', icon: FileText },
+  { href: '/insights', label: 'Insights', icon: Lightbulb },
+  { href: '/simulation', label: 'Simulation', icon: TestTube },
 ];
 
 export default function AppHeader() {
