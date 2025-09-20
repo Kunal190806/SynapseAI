@@ -31,7 +31,7 @@ export default function SimulationPage() {
   };
 
   return (
-    <div className="grid gap-6 lg:grid-cols-2">
+    <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
       <Card>
         <CardHeader>
           <CardTitle>Decision Simulation Sandbox</CardTitle>
@@ -48,7 +48,7 @@ export default function SimulationPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                     <div className="flex items-center gap-2"><Target className="w-4 h-4 text-muted-foreground" /> Overall Alignment: <strong>{dashboardData.overallAlignment}</strong></div>
                     <div className="flex items-center gap-2"><BrainCircuit className="w-4 h-4 text-muted-foreground" /> Active Projects: <strong>{dashboardData.activeProjects}</strong></div>
                     <div className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-muted-foreground" /> Tasks Completed: <strong>{dashboardData.tasksCompleted}</strong></div>

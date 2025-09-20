@@ -51,7 +51,7 @@ const getStatusVariant = (status: string): "success" | "warning" | "destructive"
 export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title="Purpose Alignment"
           value="92%"
@@ -79,7 +79,7 @@ export default function DashboardPage() {
         />
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Alignment Over Time</CardTitle>
@@ -104,8 +104,8 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card className="md:col-span-2">
+      <div className="grid gap-4 grid-cols-1 lg:grid-cols-3">
+        <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Recent Activity</CardTitle>
             <CardDescription>
@@ -117,7 +117,7 @@ export default function DashboardPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Project</TableHead>
-                  <TableHead>Task</TableHead>
+                  <TableHead className="hidden sm:table-cell">Task</TableHead>
                   <TableHead className="text-right">Status</TableHead>
                 </TableRow>
               </TableHeader>
@@ -125,7 +125,7 @@ export default function DashboardPage() {
                 {recentActivities.map((activity, index) => (
                   <TableRow key={index}>
                     <TableCell className="font-medium">{activity.project}</TableCell>
-                    <TableCell className="text-muted-foreground">{activity.task}</TableCell>
+                    <TableCell className="text-muted-foreground hidden sm:table-cell">{activity.task}</TableCell>
                     <TableCell className="text-right">
                        <Badge variant={getStatusVariant(activity.status)}>
                         {activity.status}

@@ -147,9 +147,9 @@ export default function GoalsPage() {
                       <h4 className="font-semibold mb-2 text-muted-foreground">Aligned Projects:</h4>
                       <ul className="space-y-2">
                         {goal.projects.map((project, index) => (
-                          <li key={index} className="flex items-center justify-between p-2 rounded-md bg-muted/50">
+                          <li key={index} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-2 rounded-md bg-muted/50 gap-2">
                             <span className="font-medium">{project.name}</span>
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
                               <Badge variant="outline">Alignment: {project.alignment}</Badge>
                               <Badge variant={getStatusVariant(project.status)}>{project.status}</Badge>
                             </div>

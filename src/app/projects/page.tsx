@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Filter } from "lucide-react";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 const projects = [
   {
@@ -137,45 +138,48 @@ export default function ProjectsPage() {
                 Display of all active projects, their status, and progress towards strategic goals.
                 </CardDescription>
             </div>
-            <Button variant="outline">
+            <Button variant="outline" className="hidden sm:flex">
                 <Filter className="mr-2 h-4 w-4" />
                 Filter Projects
             </Button>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[200px]">Project Name</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Progress</TableHead>
-                <TableHead>Strategic Goal</TableHead>
-                <TableHead className="text-right">Alignment</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {projects.map((project) => (
-                <TableRow key={project.name}>
-                  <TableCell className="font-medium">{project.name}</TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={getStatusVariant(project.status)}
-                    >
-                      {project.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Progress value={project.progress} className="w-full max-w-[100px] h-2" />
-                      <span className="text-muted-foreground text-sm">{project.progress}%</span>
-                    </div>
-                  </TableCell>
-                  <TableCell>{project.strategicGoal}</TableCell>
-                  <TableCell className="text-right">{project.alignment}</TableCell>
+          <ScrollArea className="w-full whitespace-nowrap">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[200px]">Project Name</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Progress</TableHead>
+                  <TableHead className="hidden md:table-cell">Strategic Goal</TableHead>
+                  <TableHead className="text-right hidden sm:table-cell">Alignment</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {projects.map((project) => (
+                  <TableRow key={project.name}>
+                    <TableCell className="font-medium">{project.name}</TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={getStatusVariant(project.status)}
+                      >
+                        {project.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Progress value={project.progress} className="w-full max-w-[100px] h-2" />
+                        <span className="text-muted-foreground text-sm">{project.progress}%</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell">{project.strategicGoal}</TableCell>
+                    <TableCell className="text-right hidden sm:table-cell">{project.alignment}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
         </CardContent>
       </Card>
     </div>
