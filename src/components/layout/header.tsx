@@ -113,6 +113,9 @@ export default function AppHeader() {
                       <DropdownMenuItem onClick={() => changeLanguage('hi')}>
                           Hindi
                       </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => changeLanguage('mr')}>
+                          Marathi
+                      </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
 
