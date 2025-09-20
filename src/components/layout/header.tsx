@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { User, Bell, PanelLeft, Sun, Moon, LogOut } from "lucide-react";
+import { User, Bell, PanelLeft, Sun, Moon, LogOut, Languages } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,21 +26,28 @@ import { cn } from "@/lib/utils";
 import React from "react";
 import Logo from "@/components/logo";
 import { useRouter } from "next/navigation";
+import { useTranslation } from 'react-i18next';
+import '@/lib/i18n';
+
 
 export default function AppHeader() {
   const userAvatar = PlaceHolderImages.find(img => img.id === 'user-avatar');
   const { setTheme, theme } = useTheme();
   const [isClient, setIsClient] = React.useState(false);
   const router = useRouter();
+  const { i18n } = useTranslation();
+
 
   React.useEffect(() => {
     setIsClient(true);
   }, []);
 
   const handleLogout = () => {
-    // For a demo app, we can just redirect to the login page.
-    // In a real app, you would clear session/auth tokens here.
     router.push('/login');
+  };
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
   };
 
   return (
@@ -88,6 +95,27 @@ export default function AppHeader() {
         <div className="flex items-center justify-end gap-2 md:gap-4 flex-1">
             {isClient && (
               <>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                      <Button
+                          variant="ghost"
+                          size="icon"
+                          className="rounded-full"
+                      >
+                          <Languages className="h-5 w-5" />
+                          <span className="sr-only">Change language</span>
+                      </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => changeLanguage('en')}>
+                          English
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => changeLanguage('hi')}>
+                          Hindi
+                      </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
                 <Button
                     variant="ghost"
                     size="icon"
