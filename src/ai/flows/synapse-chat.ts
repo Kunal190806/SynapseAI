@@ -9,6 +9,7 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
+import { Message, part } from 'genkit';
 
 // Mock data source for project statuses. In a real application, this would
 // likely come from a database or a project management API.
@@ -73,16 +74,59 @@ export const synapseChat = ai.defineFlow(
     outputSchema: z.string(),
   },
   async (query) => {
-    const llmResponse = await synapseChatPrompt(query);
-    const text = llmResponse.text;
-    if (text) {
-      return text;
+    const history: Message[] = [
+      new Message({
+        role: 'user',
+        content: [part(query)],
+      }),
+    ];
+
+    const llmResponse = await ai.generate({
+      prompt: {
+        system: `You are SynapseAI, the cognitive nervous system for organizations.
+Your role is to provide clear, concise, and accurate information about project status.
+When a user asks about a project, use the getProjectStatus tool to fetch the latest information.
+If the project is not found, inform the user politely.
+Keep your answers brief and to the point.`,
+        messages: history
+      },
+      tools: [getProjectStatus],
+    });
+
+    const choice = llmResponse.choices[0];
+    if (choice.message.content.length > 0) {
+      return choice.text;
     }
 
-    const toolCalls = llmResponse.toolCalls;
-    if (toolCalls.length > 0) {
+    if (choice.finishReason === 'toolCode') {
+      const toolRequest = choice.message.toolRequest;
+      if (!toolRequest) {
+        return "I'm sorry, I couldn't process that request.";
+      }
+      history.push(choice.message);
       const toolResponse = await llmResponse.performTools();
-      const finalResponse = await synapseChatPrompt(query, {toolResponse});
+
+      history.push(
+        new Message({
+          role: 'tool',
+          content: toolResponse.map(r => ({
+            toolRequest,
+            toolResponse: r,
+          }))
+        })
+      );
+      
+      const finalResponse = await ai.generate({
+        prompt: {
+          system: `You are SynapseAI, the cognitive nervous system for organizations.
+Your role is to provide clear, concise, and accurate information about project status.
+When a user asks about a project, use the getProjectStatus tool to fetch the latest information.
+If the project is not found, inform the user politely.
+Keep your answers brief and to the point.`,
+          messages: history
+        },
+        tools: [getProjectStatus]
+      });
       return finalResponse.text ?? "I'm sorry, I couldn't process that request.";
     }
 
