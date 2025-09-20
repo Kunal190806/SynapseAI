@@ -1,3 +1,6 @@
+// src/app/page.tsx
+'use client';
+
 import {
   Card,
   CardContent,
@@ -22,6 +25,8 @@ import {
 } from "@/components/ui/table";
 import AppHeader from "@/components/layout/header";
 import AppNavbar from "@/components/layout/navbar";
+import { useTranslation } from "react-i18next";
+import '@/lib/i18n';
 
 const recentActivities = [
   { project: "Project Phoenix", task: "Deploy to staging", status: "Completed", user: "Alice" },
@@ -51,6 +56,8 @@ const getStatusVariant = (status: string): "success" | "warning" | "destructive"
   };
 
 export default function DashboardPage() {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col min-h-screen">
       <AppHeader />
@@ -59,38 +66,38 @@ export default function DashboardPage() {
         <div className="flex flex-col gap-6">
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             <StatCard
-              title="Purpose Alignment"
+              title={t("Purpose Alignment")}
               value="92%"
               icon={Target}
-              description="+5% from last month"
+              description={t("+5% from last month")}
               footer={<Progress value={92} className="h-2" />}
             />
             <StatCard
-              title="Active Projects"
+              title={t("Active Projects")}
               value="12"
               icon={BrainCircuit}
-              description="3 new this week"
+              description={t("3 new this week")}
             />
             <StatCard
-              title="Tasks Completed"
+              title={t("Tasks Completed")}
               value="348"
               icon={CheckCircle}
-              description="+15% from last week"
+              description={t("+15% from last week")}
             />
             <StatCard
-              title="Narrative Strength"
+              title={t("Narrative Strength")}
               value="8.5/10"
               icon={Activity}
-              description="Consistently strong"
+              description={t("Consistently strong")}
             />
           </div>
 
           <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>Alignment Over Time</CardTitle>
+                <CardTitle>{t("Alignment Over Time")}</CardTitle>
                 <CardDescription>
-                  How well operational tasks are aligning with strategic goals.
+                  {t("How well operational tasks are aligning with strategic goals.")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -99,9 +106,9 @@ export default function DashboardPage() {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Project Progress</CardTitle>
+                <CardTitle>{t("Project Progress")}</CardTitle>
                 <CardDescription>
-                  Completion status of active projects.
+                  {t("Completion status of active projects.")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -113,28 +120,28 @@ export default function DashboardPage() {
           <div className="grid gap-4 grid-cols-1 lg:grid-cols-3">
             <Card className="lg:col-span-2">
               <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
+                <CardTitle>{t("Recent Activity")}</CardTitle>
                 <CardDescription>
-                  A log of the latest tasks and updates across all projects.
+                  {t("A log of the latest tasks and updates across all projects.")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Project</TableHead>
-                      <TableHead className="hidden sm:table-cell">Task</TableHead>
-                      <TableHead className="text-right">Status</TableHead>
+                      <TableHead>{t("Project")}</TableHead>
+                      <TableHead className="hidden sm:table-cell">{t("Task")}</TableHead>
+                      <TableHead className="text-right">{t("Status")}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {recentActivities.map((activity, index) => (
                       <TableRow key={index}>
-                        <TableCell className="font-medium">{activity.project}</TableCell>
-                        <TableCell className="text-muted-foreground hidden sm:table-cell">{activity.task}</TableCell>
+                        <TableCell className="font-medium">{t(activity.project)}</TableCell>
+                        <TableCell className="text-muted-foreground hidden sm:table-cell">{t(activity.task)}</TableCell>
                         <TableCell className="text-right">
                           <Badge variant={getStatusVariant(activity.status)}>
-                            {activity.status}
+                            {t(activity.status)}
                           </Badge>
                         </TableCell>
                       </TableRow>
@@ -145,9 +152,9 @@ export default function DashboardPage() {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Task Distribution</CardTitle>
+                <CardTitle>{t("Task Distribution")}</CardTitle>
                 <CardDescription>
-                  Breakdown of tasks by strategic goal.
+                  {t("Breakdown of tasks by strategic goal.")}
                 </CardDescription>
               </CardHeader>
               <CardContent>

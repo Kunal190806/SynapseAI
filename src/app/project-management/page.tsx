@@ -30,6 +30,8 @@ import { Loader2 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import AppHeader from '@/components/layout/header';
 import AppNavbar from '@/components/layout/navbar';
+import { useTranslation } from 'react-i18next';
+import '@/lib/i18n';
 
 const formSchema = z.object({
   projectDescription: z.string().min(1, 'Project description is required.'),
@@ -39,6 +41,7 @@ const formSchema = z.object({
 });
 
 export default function ProjectManagementPage() {
+  const { t } = useTranslation();
   const [result, setResult] =
     useState<AdaptiveProjectManagementOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -75,9 +78,9 @@ export default function ProjectManagementPage() {
         <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
           <Card>
             <CardHeader>
-              <CardTitle>Adaptive Management</CardTitle>
+              <CardTitle>{t("Adaptive Management")}</CardTitle>
               <CardDescription>
-                Get real-time recommendations to optimize your project.
+                {t("Get real-time recommendations to optimize your project.")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -88,10 +91,10 @@ export default function ProjectManagementPage() {
                     name="projectDescription"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Project Description</FormLabel>
+                        <FormLabel>{t("Project Description")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="e.g., Project Phoenix is a Q4 initiative to redesign our mobile application's user onboarding flow. The primary goal is to increase user activation rates by 20% within the first month of launch. The project involves UX/UI redesign, front-end and back-end development, and A/B testing."
+                            placeholder={t("e.g., Project Phoenix is a Q4 initiative to redesign our mobile application's user onboarding flow. The primary goal is to increase user activation rates by 20% within the first month of launch. The project involves UX/UI redesign, front-end and back-end development, and A/B testing.")}
                             {...field}
                           />
                         </FormControl>
@@ -104,14 +107,10 @@ export default function ProjectManagementPage() {
                     name="teamStructures"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Team Structures</FormLabel>
+                        <FormLabel>{t("Team Structures")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="e.g., The project is led by a cross-functional team:
-- Core Pod (1 PM, 1 Designer, 2 FE Devs, 1 BE Dev).
-- QA Team (2 Testers).
-- Marketing (1 Product Marketing Manager for launch comms).
-The Core Pod operates in 2-week sprints."
+                            placeholder={t("e.g., The project is led by a cross-functional team:\n- Core Pod (1 PM, 1 Designer, 2 FE Devs, 1 BE Dev).\n- QA Team (2 Testers).\n- Marketing (1 Product Marketing Manager for launch comms).\nThe Core Pod operates in 2-week sprints.")}
                             {...field}
                           />
                         </FormControl>
@@ -124,10 +123,10 @@ The Core Pod operates in 2-week sprints."
                     name="currentStatus"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Current Status</FormLabel>
+                        <FormLabel>{t("Current Status")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="e.g., Sprint 3 of 6 is complete. The new UI designs are finalized. Front-end development is 50% complete. A key back-end dependency on the new authentication service is blocked, causing a potential 1-week delay. The initial A/B test plan is drafted."
+                            placeholder={t("e.g., Sprint 3 of 6 is complete. The new UI designs are finalized. Front-end development is 50% complete. A key back-end dependency on the new authentication service is blocked, causing a potential 1-week delay. The initial A/B test plan is drafted.")}
                             {...field}
                           />
                         </FormControl>
@@ -140,13 +139,10 @@ The Core Pod operates in 2-week sprints."
                     name="performanceData"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Performance Data</FormLabel>
+                        <FormLabel>{t("Performance Data")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="e.g., - Sprint 1 & 2 velocity: 18 points (target was 20).
-- BE Dev 1 has a high number of PR revisions, averaging 3 rounds per PR.
-- FE Dev 2 has completed 40% more tasks than FE Dev 1.
-- Current bug count: 5 critical, 12 non-critical."
+                            placeholder={t("e.g., - Sprint 1 & 2 velocity: 18 points (target was 20).\n- BE Dev 1 has a high number of PR revisions, averaging 3 rounds per PR.\n- FE Dev 2 has completed 40% more tasks than FE Dev 1.\n- Current bug count: 5 critical, 12 non-critical.")}
                             {...field}
                           />
                         </FormControl>
@@ -158,7 +154,7 @@ The Core Pod operates in 2-week sprints."
                     {isLoading && (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     )}
-                    Generate Recommendations
+                    {t("Generate Recommendations")}
                   </Button>
                 </form>
               </Form>
@@ -167,7 +163,7 @@ The Core Pod operates in 2-week sprints."
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>AI-Generated Analysis</CardTitle>
+                <CardTitle>{t("AI-Generated Analysis")}</CardTitle>
               </CardHeader>
               <CardContent>
                 {isLoading && (
@@ -178,29 +174,29 @@ The Core Pod operates in 2-week sprints."
                 {result ? (
                   <div className="prose dark:prose-invert max-w-none space-y-6">
                     <div>
-                      <h3 className="font-semibold">Recommendations</h3>
+                      <h3 className="font-semibold">{t("Recommendations")}</h3>
                       <p>{result.recommendations}</p>
                     </div>
                     <Separator />
                     <div>
-                      <h3 className="font-semibold">Risk Assessment</h3>
+                      <h3 className="font-semibold">{t("Risk Assessment")}</h3>
                       <p>{result.riskAssessment}</p>
                     </div>
                     <Separator />
                     <div>
-                      <h3 className="font-semibold">Performance Forecast</h3>
+                      <h3 className="font-semibold">{t("Performance Forecast")}</h3>
                       <p>{result.performanceForecast}</p>
                     </div>
                     <Separator />
                     <div>
-                      <h3 className="font-semibold">Strategic Alignment</h3>
+                      <h3 className="font-semibold">{t("Strategic Alignment")}</h3>
                       <p>{result.strategicAlignment}</p>
                     </div>
                   </div>
                 ) : (
                   !isLoading && (
                     <p className="text-muted-foreground">
-                      Your generated analysis will appear here.
+                      {t("Your generated analysis will appear here.")}
                     </p>
                   )
                 )}

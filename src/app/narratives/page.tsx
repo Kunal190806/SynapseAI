@@ -32,6 +32,9 @@ import {Textarea} from '@/components/ui/textarea';
 import {Loader2, Activity, Target, CheckCircle, BrainCircuit} from 'lucide-react';
 import AppHeader from '@/components/layout/header';
 import AppNavbar from '@/components/layout/navbar';
+import { useTranslation } from 'react-i18next';
+import '@/lib/i18n';
+
 
 const formSchema = z.object({
   projectName: z.string().min(1, 'Project name is required.'),
@@ -57,6 +60,7 @@ const dashboardData = {
 
 
 export default function NarrativesPage() {
+  const { t } = useTranslation();
   const [narrative, setNarrative] =
     useState<GenerateStrategicNarrativeOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -95,9 +99,9 @@ export default function NarrativesPage() {
         <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
           <Card>
             <CardHeader>
-              <CardTitle>Narrative Studio</CardTitle>
+              <CardTitle>{t("Narrative Studio")}</CardTitle>
               <CardDescription>
-                Transform organizational data into interactive storytelling experiences. See contributions inside a living story of the company’s journey.
+                {t("Transform organizational data into interactive storytelling experiences. See contributions inside a living story of the company’s journey.")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -108,9 +112,9 @@ export default function NarrativesPage() {
                     name="projectName"
                     render={({field}) => (
                       <FormItem>
-                        <FormLabel>Project Name</FormLabel>
+                        <FormLabel>{t("Project Name")}</FormLabel>
                         <FormControl>
-                          <Input placeholder="e.g., QuantumLeap CRM Integration" {...field} />
+                          <Input placeholder={t("e.g., QuantumLeap CRM Integration")} {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -121,10 +125,10 @@ export default function NarrativesPage() {
                     name="projectGoals"
                     render={({field}) => (
                       <FormItem>
-                        <FormLabel>Project Goals</FormLabel>
+                        <FormLabel>{t("Project Goals")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="e.g., To integrate the new QuantumLeap CRM system with our existing sales and marketing platforms. Key objectives include migrating all customer data, training the sales team, and achieving a 30% reduction in manual data entry by the end of Q3."
+                            placeholder={t("e.g., To integrate the new QuantumLeap CRM system with our existing sales and marketing platforms. Key objectives include migrating all customer data, training the sales team, and achieving a 30% reduction in manual data entry by the end of Q3.")}
                             {...field}
                           />
                         </FormControl>
@@ -137,10 +141,10 @@ export default function NarrativesPage() {
                     name="progressSummary"
                     render={({field}) => (
                       <FormItem>
-                        <FormLabel>Progress Summary</FormLabel>
+                        <FormLabel>{t("Progress Summary")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="e.g., We are currently at 75% completion. The data migration module is complete and has been tested successfully. The development of the marketing automation sync is underway, with 5 of 8 endpoints delivered. User acceptance testing is scheduled to begin in two weeks."
+                            placeholder={t("e.g., We are currently at 75% completion. The data migration module is complete and has been tested successfully. The development of the marketing automation sync is underway, with 5 of 8 endpoints delivered. User acceptance testing is scheduled to begin in two weeks.")}
                             {...field}
                           />
                         </FormControl>
@@ -153,10 +157,10 @@ export default function NarrativesPage() {
                     name="keyAchievements"
                     render={({field}) => (
                       <FormItem>
-                        <FormLabel>Key Achievements</FormLabel>
+                        <FormLabel>{t("Key Achievements")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="e.g., 1. Completed data migration from legacy CRM with 99.8% accuracy. 2. Received positive feedback on the new UI from our internal sales champions. 3. Negotiated a 15% discount on the QuantumLeap enterprise license."
+                            placeholder={t("e.g., 1. Completed data migration from legacy CRM with 99.8% accuracy. 2. Received positive feedback on the new UI from our internal sales champions. 3. Negotiated a 15% discount on the QuantumLeap enterprise license.")}
                             {...field}
                           />
                         </FormControl>
@@ -169,10 +173,10 @@ export default function NarrativesPage() {
                     name="challengesFaced"
                     render={({field}) => (
                       <FormItem>
-                        <FormLabel>Challenges Faced</FormLabel>
+                        <FormLabel>{t("Challenges Faced")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="e.g., We encountered unexpected API limitations with the legacy marketing platform, requiring a custom middleware solution. This has introduced a two-week delay, but the team has mitigated further schedule risk by parallelizing other tasks."
+                            placeholder={t("e.g., We encountered unexpected API limitations with the legacy marketing platform, requiring a custom middleware solution. This has introduced a two-week delay, but the team has mitigated further schedule risk by parallelizing other tasks.")}
                             {...field}
                           />
                         </FormControl>
@@ -185,10 +189,10 @@ export default function NarrativesPage() {
                     name="alignmentToStrategicGoals"
                     render={({field}) => (
                       <FormItem>
-                        <FormLabel>Alignment to Strategic Goals</FormLabel>
+                        <FormLabel>{t("Alignment to Strategic Goals")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="e.g., This project is a cornerstone of our 'Customer 360' strategic initiative. By centralizing customer data, we will empower the sales team to improve cross-selling opportunities by 25%, directly impacting our goal to increase annual recurring revenue."
+                            placeholder={t("e.g., This project is a cornerstone of our 'Customer 360' strategic initiative. By centralizing customer data, we will empower the sales team to improve cross-selling opportunities by 25%, directly impacting our goal to increase annual recurring revenue.")}
                             {...field}
                           />
                         </FormControl>
@@ -200,7 +204,7 @@ export default function NarrativesPage() {
                     {isLoading && (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     )}
-                    Generate Narrative
+                    {t("Generate Narrative")}
                   </Button>
                 </form>
               </Form>
@@ -209,7 +213,7 @@ export default function NarrativesPage() {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Generated Strategic Narrative</CardTitle>
+                <CardTitle>{t("Generated Strategic Narrative")}</CardTitle>
               </CardHeader>
               <CardContent>
                 {isLoading && (
@@ -224,7 +228,7 @@ export default function NarrativesPage() {
                 ) : (
                   !isLoading && (
                     <p className="text-muted-foreground">
-                      Your generated narrative will appear here.
+                      {t("Your generated narrative will appear here.")}
                     </p>
                   )
                 )}
@@ -233,25 +237,25 @@ export default function NarrativesPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Dashboard Data</CardTitle>
+                <CardTitle>{t("Dashboard Data")}</CardTitle>
                 <CardDescription>
-                  Live data from the main dashboard for context.
+                  {t("Live data from the main dashboard for context.")}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                    <div className="flex items-center gap-2"><Target className="w-4 h-4 text-muted-foreground" /> Purpose Alignment: <strong>{dashboardData.overallAlignment}</strong></div>
-                    <div className="flex items-center gap-2"><BrainCircuit className="w-4 h-4 text-muted-foreground" /> Active Projects: <strong>{dashboardData.activeProjects}</strong></div>
-                    <div className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-muted-foreground" /> Tasks Completed: <strong>{dashboardData.tasksCompleted}</strong></div>
-                    <div className="flex items-center gap-2"><Activity className="w-4 h-4 text-muted-foreground" /> Narrative Strength: <strong>{dashboardData.narrativeStrength}</strong></div>
+                    <div className="flex items-center gap-2"><Target className="w-4 h-4 text-muted-foreground" /> {t("Purpose Alignment")}: <strong>{dashboardData.overallAlignment}</strong></div>
+                    <div className="flex items-center gap-2"><BrainCircuit className="w-4 h-4 text-muted-foreground" /> {t("Active Projects")}: <strong>{dashboardData.activeProjects}</strong></div>
+                    <div className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-muted-foreground" /> {t("Tasks Completed")}: <strong>{dashboardData.tasksCompleted}</strong></div>
+                    <div className="flex items-center gap-2"><Activity className="w-4 h-4 text-muted-foreground" /> {t("Narrative Strength")}: <strong>{dashboardData.narrativeStrength}</strong></div>
                   </div>
                   <div>
-                    <h4 className="font-medium mb-2">Recent Activities</h4>
+                    <h4 className="font-medium mb-2">{t("Recent Activities")}</h4>
                     <ul className="space-y-2 text-sm text-muted-foreground">
                       {dashboardData.recentActivities.map((activity, index) => (
                         <li key={index} className="flex justify-between">
-                          <span>{activity.project}: {activity.task}</span>
-                          <span className="font-medium">{activity.status}</span>
+                          <span>{t(activity.project)}: {t(activity.task)}</span>
+                          <span className="font-medium">{t(activity.status)}</span>
                         </li>
                       ))}
                     </ul>

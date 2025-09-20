@@ -30,6 +30,8 @@ import { Loader2, Activity, Target, CheckCircle, BrainCircuit } from 'lucide-rea
 import { Separator } from '@/components/ui/separator';
 import AppHeader from '@/components/layout/header';
 import AppNavbar from '@/components/layout/navbar';
+import { useTranslation } from 'react-i18next';
+import '@/lib/i18n';
 
 const formSchema = z.object({
   organizationalData: z.string().min(1, 'Organizational data is required.'),
@@ -47,6 +49,7 @@ const dashboardData = {
 };
 
 export default function InsightsPage() {
+  const { t } = useTranslation();
   const [insights, setInsights] = useState<GetAiPoweredInsightsOutput | null>(
     null
   );
@@ -81,9 +84,9 @@ export default function InsightsPage() {
         <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
           <Card>
             <CardHeader>
-              <CardTitle>Collective Intelligence</CardTitle>
+              <CardTitle>{t("Collective Intelligence")}</CardTitle>
               <CardDescription>
-                Surface insights from the ground up by analyzing feedback, ideas, and patterns across teams.
+                {t("Surface insights from the ground up by analyzing feedback, ideas, and patterns across teams.")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -94,12 +97,10 @@ export default function InsightsPage() {
                     name="organizationalData"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Organizational Data</FormLabel>
+                        <FormLabel>{t("Organizational Data")}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="e.g., - Quarterly Sales Report (Q2 2024): Revenue up 15% YoY, but profit margin decreased by 2% due to increased marketing spend.
-- Team Performance Metrics: Engineering velocity is 20 points/sprint. Support ticket resolution time is averaging 48 hours.
-- Market Analysis: Competitor X launched a new feature that is gaining traction. Customer feedback suggests a desire for better mobile integration."
+                            placeholder={t("e.g., - Quarterly Sales Report (Q2 2024): Revenue up 15% YoY, but profit margin decreased by 2% due to increased marketing spend.\n- Team Performance Metrics: Engineering velocity is 20 points/sprint. Support ticket resolution time is averaging 48 hours.\n- Market Analysis: Competitor X launched a new feature that is gaining traction. Customer feedback suggests a desire for better mobile integration.")}
                             className="min-h-[200px]"
                             {...field}
                           />
@@ -112,7 +113,7 @@ export default function InsightsPage() {
                     {isLoading && (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     )}
-                    Generate Insights
+                    {t("Generate Insights")}
                   </Button>
                 </form>
               </Form>
@@ -121,7 +122,7 @@ export default function InsightsPage() {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Generated Insights & Recommendations</CardTitle>
+                <CardTitle>{t("Generated Insights & Recommendations")}</CardTitle>
               </CardHeader>
               <CardContent>
                 {isLoading && (
@@ -132,19 +133,19 @@ export default function InsightsPage() {
                 {insights ? (
                   <div className="prose dark:prose-invert max-w-none space-y-4">
                     <div>
-                      <h3 className="font-semibold">Insights</h3>
+                      <h3 className="font-semibold">{t("Insights")}</h3>
                       <p>{insights.insights}</p>
                     </div>
                     <Separator />
                     <div>
-                      <h3 className="font-semibold">Recommendations</h3>
+                      <h3 className="font-semibold">{t("Recommendations")}</h3>
                       <p>{insights.recommendations}</p>
                     </div>
                   </div>
                 ) : (
                   !isLoading && (
                     <p className="text-muted-foreground">
-                      Your generated insights will appear here.
+                      {t("Your generated insights will appear here.")}
                     </p>
                   )
                 )}
@@ -152,25 +153,25 @@ export default function InsightsPage() {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Dashboard Data</CardTitle>
+                <CardTitle>{t("Dashboard Data")}</CardTitle>
                 <CardDescription>
-                  Live data from the main dashboard for context.
+                  {t("Live data from the main dashboard for context.")}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                    <div className="flex items-center gap-2"><Target className="w-4 h-4 text-muted-foreground" /> Purpose Alignment: <strong>{dashboardData.overallAlignment}</strong></div>
-                    <div className="flex items-center gap-2"><BrainCircuit className="w-4 h-4 text-muted-foreground" /> Active Projects: <strong>{dashboardData.activeProjects}</strong></div>
-                    <div className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-muted-foreground" /> Tasks Completed: <strong>{dashboardData.tasksCompleted}</strong></div>
-                    <div className="flex items-center gap-2"><Activity className="w-4 h-4 text-muted-foreground" /> Narrative Strength: <strong>{dashboardData.narrativeStrength}</strong></div>
+                    <div className="flex items-center gap-2"><Target className="w-4 h-4 text-muted-foreground" /> {t("Purpose Alignment")}: <strong>{dashboardData.overallAlignment}</strong></div>
+                    <div className="flex items-center gap-2"><BrainCircuit className="w-4 h-4 text-muted-foreground" /> {t("Active Projects")}: <strong>{dashboardData.activeProjects}</strong></div>
+                    <div className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-muted-foreground" /> {t("Tasks Completed")}: <strong>{dashboardData.tasksCompleted}</strong></div>
+                    <div className="flex items-center gap-2"><Activity className="w-4 h-4 text-muted-foreground" /> {t("Narrative Strength")}: <strong>{dashboardData.narrativeStrength}</strong></div>
                   </div>
                   <div>
-                    <h4 className="font-medium mb-2">Recent Activities</h4>
+                    <h4 className="font-medium mb-2">{t("Recent Activities")}</h4>
                     <ul className="space-y-2 text-sm text-muted-foreground">
                       {dashboardData.recentActivities.map((activity, index) => (
                         <li key={index} className="flex justify-between">
-                          <span>{activity.project}: {activity.task}</span>
-                          <span className="font-medium">{activity.status}</span>
+                          <span>{t(activity.project)}: {t(activity.task)}</span>
+                          <span className="font-medium">{t(activity.status)}</span>
                         </li>
                       ))}
                     </ul>

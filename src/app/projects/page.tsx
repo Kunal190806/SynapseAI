@@ -1,4 +1,6 @@
 // src/app/projects/page.tsx
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import {
   Table,
@@ -15,6 +17,8 @@ import { Filter } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import AppHeader from "@/components/layout/header";
 import AppNavbar from "@/components/layout/navbar";
+import { useTranslation } from "react-i18next";
+import '@/lib/i18n';
 
 const projects = [
   {
@@ -130,6 +134,8 @@ const getStatusVariant = (status: string): "success" | "warning" | "destructive"
   };
 
 export default function ProjectsPage() {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col min-h-screen">
       <AppHeader />
@@ -139,14 +145,14 @@ export default function ProjectsPage() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
                 <div>
-                    <CardTitle>Projects</CardTitle>
+                    <CardTitle>{t("Projects")}</CardTitle>
                     <CardDescription>
-                    Display of all active projects, their status, and progress towards strategic goals.
+                    {t("Display of all active projects, their status, and progress towards strategic goals.")}
                     </CardDescription>
                 </div>
                 <Button variant="outline" className="hidden sm:flex">
                     <Filter className="mr-2 h-4 w-4" />
-                    Filter Projects
+                    {t("Filter Projects")}
                 </Button>
             </CardHeader>
             <CardContent>
@@ -154,22 +160,22 @@ export default function ProjectsPage() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-[200px]">Project Name</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Progress</TableHead>
-                      <TableHead className="hidden md:table-cell">Strategic Goal</TableHead>
-                      <TableHead className="text-right hidden sm:table-cell">Alignment</TableHead>
+                      <TableHead className="w-[200px]">{t("Project Name")}</TableHead>
+                      <TableHead>{t("Status")}</TableHead>
+                      <TableHead>{t("Progress")}</TableHead>
+                      <TableHead className="hidden md:table-cell">{t("Strategic Goal")}</TableHead>
+                      <TableHead className="text-right hidden sm:table-cell">{t("Alignment")}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {projects.map((project) => (
                       <TableRow key={project.name}>
-                        <TableCell className="font-medium">{project.name}</TableCell>
+                        <TableCell className="font-medium">{t(project.name)}</TableCell>
                         <TableCell>
                           <Badge
                             variant={getStatusVariant(project.status)}
                           >
-                            {project.status}
+                            {t(project.status)}
                           </Badge>
                         </TableCell>
                         <TableCell>
@@ -178,8 +184,8 @@ export default function ProjectsPage() {
                             <span className="text-muted-foreground text-sm">{project.progress}%</span>
                           </div>
                         </TableCell>
-                        <TableCell className="hidden md:table-cell">{project.strategicGoal}</TableCell>
-                        <TableCell className="text-right hidden sm:table-cell">{project.alignment}</TableCell>
+                        <TableCell className="hidden md:table-cell">{t(project.strategicGoal)}</TableCell>
+                        <TableCell className="text-right hidden sm:table-cell">{t(project.alignment)}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

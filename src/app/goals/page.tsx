@@ -1,12 +1,15 @@
 // src/app/goals/page.tsx
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Badge, badgeVariants } from "@/components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Target, Zap, Rocket, Handshake, TrendingUp, Users, Heart, Globe, Lightbulb } from "lucide-react";
-import { cn } from "@/lib/utils";
 import AppHeader from "@/components/layout/header";
 import AppNavbar from "@/components/layout/navbar";
+import { useTranslation } from "react-i18next";
+import '@/lib/i18n';
 
 const getStatusVariant = (status: string): "success" | "warning" | "destructive" | "secondary" | "outline" => {
     switch (status) {
@@ -117,6 +120,8 @@ const purposeGoals = [
 ]
 
 export default function GoalsPage() {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col min-h-screen">
       <AppHeader />
@@ -125,14 +130,14 @@ export default function GoalsPage() {
         <div className="flex flex-col gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Purpose & Goals</CardTitle>
+              <CardTitle>{t("Purpose & Goals")}</CardTitle>
               <CardDescription>
-                Evaluate every action against both strategic goals and organizational values to ensure every action has a purpose.
+                {t("Evaluate every action against both strategic goals and organizational values to ensure every action has a purpose.")}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-8">
               <div>
-                <h3 className="text-xl font-semibold mb-4">Strategic Goals</h3>
+                <h3 className="text-xl font-semibold mb-4">{t("Strategic Goals")}</h3>
                 <Accordion type="single" collapsible className="w-full">
                   {strategicGoals.map((goal) => (
                     <AccordionItem value={goal.id} key={goal.id}>
@@ -140,7 +145,7 @@ export default function GoalsPage() {
                         <div className="flex items-center gap-4 w-full">
                           <goal.icon className="h-6 w-6 text-primary" />
                           <div className="flex-1 text-left">
-                            <p className="font-semibold">{goal.title}</p>
+                            <p className="font-semibold">{t(goal.title)}</p>
                             <div className="flex items-center gap-2 mt-1">
                               <Progress value={goal.progress} className="w-full max-w-xs h-2" />
                               <span className="text-sm font-medium text-muted-foreground">{goal.progress}%</span>
@@ -150,14 +155,14 @@ export default function GoalsPage() {
                       </AccordionTrigger>
                       <AccordionContent>
                         <div className="pl-10">
-                          <h4 className="font-semibold mb-2 text-muted-foreground">Aligned Projects:</h4>
+                          <h4 className="font-semibold mb-2 text-muted-foreground">{t("Aligned Projects:")}</h4>
                           <ul className="space-y-2">
                             {goal.projects.map((project, index) => (
                               <li key={index} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-2 rounded-md bg-muted/50 gap-2">
-                                <span className="font-medium">{project.name}</span>
+                                <span className="font-medium">{t(project.name)}</span>
                                 <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
-                                  <Badge variant="outline">Alignment: {project.alignment}</Badge>
-                                  <Badge variant={getStatusVariant(project.status)}>{project.status}</Badge>
+                                  <Badge variant="outline">{t("Alignment")}: {t(project.alignment)}</Badge>
+                                  <Badge variant={getStatusVariant(project.status)}>{t(project.status)}</Badge>
                                 </div>
                               </li>
                             ))}
@@ -169,24 +174,24 @@ export default function GoalsPage() {
                 </Accordion>
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-4">Core Values & Mission</h3>
+                <h3 className="text-xl font-semibold mb-4">{t("Core Values & Mission")}</h3>
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {purposeGoals.map((goal) => (
                     <Card key={goal.id}>
                       <CardHeader>
                         <div className="flex items-center gap-3">
                             <goal.icon className="h-7 w-7 text-accent" />
-                            <CardTitle className="text-lg">{goal.title}</CardTitle>
+                            <CardTitle className="text-lg">{t(goal.title)}</CardTitle>
                         </div>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-muted-foreground mb-4">{goal.description}</p>
-                        <h4 className="font-semibold mb-2 text-sm">Supporting Initiatives:</h4>
+                        <p className="text-muted-foreground mb-4">{t(goal.description)}</p>
+                        <h4 className="font-semibold mb-2 text-sm">{t("Supporting Initiatives:")}</h4>
                         <ul className="space-y-2">
                           {goal.projects.map((project, index) => (
                             <li key={index} className="flex items-center justify-between text-sm">
-                              <span className="font-medium">{project.name}</span>
-                              <Badge variant={getStatusVariant(project.status)}>{project.status}</Badge>
+                              <span className="font-medium">{t(project.name)}</span>
+                              <Badge variant={getStatusVariant(project.status)}>{t(project.status)}</Badge>
                             </li>
                           ))}
                         </ul>

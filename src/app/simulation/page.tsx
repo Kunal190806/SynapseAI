@@ -3,9 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Loader2, Activity, Target, CheckCircle, BrainCircuit } from 'lucide-react';
 import { useState } from "react";
-import { Separator } from "@/components/ui/separator";
 import AppHeader from "@/components/layout/header";
 import AppNavbar from "@/components/layout/navbar";
+import { useTranslation } from "react-i18next";
+import '@/lib/i18n';
 
 const dashboardData = {
   overallAlignment: "92%",
@@ -19,6 +20,7 @@ const dashboardData = {
 };
 
 export default function SimulationPage() {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [simulationResult, setSimulationResult] = useState<string | null>(null);
 
@@ -27,7 +29,7 @@ export default function SimulationPage() {
     setSimulationResult(null);
     // Simulate an API call
     setTimeout(() => {
-      setSimulationResult("Simulation complete. The simulation predicts a 15% increase in project completion efficiency by reallocating resources from Project Nova to Project Phoenix. Potential risks include a 5% budget overrun but a 10% faster time-to-market.");
+      setSimulationResult(t("Simulation complete. The simulation predicts a 15% increase in project completion efficiency by reallocating resources from Project Nova to Project Phoenix. Potential risks include a 5% budget overrun but a 10% faster time-to-market."));
       setIsLoading(false);
     }, 2000);
   };
@@ -40,49 +42,49 @@ export default function SimulationPage() {
         <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
           <Card>
             <CardHeader>
-              <CardTitle>Decision Simulation Sandbox</CardTitle>
+              <CardTitle>{t("Decision Simulation Sandbox")}</CardTitle>
               <CardDescription>
-                Run "what-if" scenarios to project outcomes on timelines, budgets, and goals before making key decisions.
+                {t('Run "what-if" scenarios to project outcomes on timelines, budgets, and goals before making key decisions.')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Dashboard Data</CardTitle>
+                    <CardTitle>{t("Dashboard Data")}</CardTitle>
                     <CardDescription>
-                      Live data from the main dashboard for context.
+                      {t("Live data from the main dashboard for context.")}
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                        <div className="flex items-center gap-2"><Target className="w-4 h-4 text-muted-foreground" /> Overall Alignment: <strong>{dashboardData.overallAlignment}</strong></div>
-                        <div className="flex items-center gap-2"><BrainCircuit className="w-4 h-4 text-muted-foreground" /> Active Projects: <strong>{dashboardData.activeProjects}</strong></div>
-                        <div className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-muted-foreground" /> Tasks Completed: <strong>{dashboardData.tasksCompleted}</strong></div>
-                        <div className="flex items-center gap-2"><Activity className="w-4 h-4 text-muted-foreground" /> Narrative Strength: <strong>{dashboardData.narrativeStrength}</strong></div>
+                        <div className="flex items-center gap-2"><Target className="w-4 h-4 text-muted-foreground" /> {t("Purpose Alignment")}: <strong>{dashboardData.overallAlignment}</strong></div>
+                        <div className="flex items-center gap-2"><BrainCircuit className="w-4 h-4 text-muted-foreground" /> {t("Active Projects")}: <strong>{dashboardData.activeProjects}</strong></div>
+                        <div className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-muted-foreground" /> {t("Tasks Completed")}: <strong>{dashboardData.tasksCompleted}</strong></div>
+                        <div className="flex items-center gap-2"><Activity className="w-4 h-4 text-muted-foreground" /> {t("Narrative Strength")}: <strong>{dashboardData.narrativeStrength}</strong></div>
                       </div>
                       <div>
-                        <h4 className="font-medium mb-2">Recent Activities</h4>
+                        <h4 className="font-medium mb-2">{t("Recent Activities")}</h4>
                         <ul className="space-y-2 text-sm text-muted-foreground">
                           {dashboardData.recentActivities.map((activity, index) => (
                             <li key={index} className="flex justify-between">
-                              <span>{activity.project}: {activity.task}</span>
-                              <span className="font-medium">{activity.status}</span>
+                              <span>{t(activity.project)}: {t(activity.task)}</span>
+                              <span className="font-medium">{t(activity.status)}</span>
                             </li>
                           ))}
                         </ul>
                       </div>
                   </CardContent>
                 </Card>
-                <p>Press the button below to start a simulation based on the current dashboard data.</p>
+                <p>{t("Press the button below to start a simulation based on the current dashboard data.")}</p>
                 <Button onClick={handleStartSimulation} disabled={isLoading}>
                   {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Start Simulation
+                  {t("Start Simulation")}
                 </Button>
             </CardContent>
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle>Simulation Outcome</CardTitle>
+              <CardTitle>{t("Simulation Outcome")}</CardTitle>
             </CardHeader>
             <CardContent>
             {isLoading && (
@@ -97,7 +99,7 @@ export default function SimulationPage() {
             ) : (
               !isLoading && (
                 <p className="text-muted-foreground">
-                  Your simulation results will appear here.
+                  {t("Your simulation results will appear here.")}
                 </p>
               )
             )}

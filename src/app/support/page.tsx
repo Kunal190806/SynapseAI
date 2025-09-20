@@ -1,4 +1,6 @@
 // src/app/support/page.tsx
+'use client';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
@@ -8,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import AppHeader from "@/components/layout/header";
 import AppNavbar from "@/components/layout/navbar";
+import { useTranslation } from "react-i18next";
+import '@/lib/i18n';
 
 const faqs = [
   {
@@ -25,6 +29,8 @@ const faqs = [
 ];
 
 export default function SupportPage() {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col min-h-screen">
       <AppHeader />
@@ -33,21 +39,21 @@ export default function SupportPage() {
         <div className="flex flex-col gap-6 max-w-4xl mx-auto">
           <Card>
             <CardHeader>
-              <CardTitle>Support</CardTitle>
+              <CardTitle>{t("Support")}</CardTitle>
               <CardDescription>
-                Get help with SynapseAI and find answers to your questions.
+                {t("Get help with SynapseAI and find answers to your questions.")}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-8">
               {/* FAQ Section */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Frequently Asked Questions</h3>
+                <h3 className="text-xl font-semibold mb-4">{t("Frequently Asked Questions")}</h3>
                 <Accordion type="single" collapsible className="w-full">
                   {faqs.map((faq, index) => (
                     <AccordionItem value={`item-${index}`} key={index}>
-                      <AccordionTrigger>{faq.question}</AccordionTrigger>
+                      <AccordionTrigger>{t(faq.question)}</AccordionTrigger>
                       <AccordionContent>
-                        {faq.answer}
+                        {t(faq.answer)}
                       </AccordionContent>
                     </AccordionItem>
                   ))}
@@ -58,17 +64,17 @@ export default function SupportPage() {
 
               {/* Contact Form */}
               <div>
-                <h3 className="text-xl font-semibold mb-4">Contact Support</h3>
+                <h3 className="text-xl font-semibold mb-4">{t("Contact Support")}</h3>
                 <form className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="subject">Subject</Label>
-                    <Input id="subject" placeholder="e.g., Issue with Project Phoenix" />
+                    <Label htmlFor="subject">{t("Subject")}</Label>
+                    <Input id="subject" placeholder={t("e.g., Issue with Project Phoenix")} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea id="message" placeholder="Please describe your issue in detail..." className="min-h-[150px]" />
+                    <Label htmlFor="message">{t("Message")}</Label>
+                    <Textarea id="message" placeholder={t("Please describe your issue in detail...")} className="min-h-[150px]" />
                   </div>
-                  <Button>Submit Request</Button>
+                  <Button>{t("Submit Request")}</Button>
                 </form>
               </div>
             </CardContent>
