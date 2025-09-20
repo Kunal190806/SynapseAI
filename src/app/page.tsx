@@ -29,12 +29,30 @@ const recentActivities = [
   { project: "QuantumLeap", task: "Fix login bug", status: "In Progress", user: "David" },
 ];
 
+const getStatusVariant = (status: string): "success" | "warning" | "destructive" | "secondary" | "outline" => {
+    switch (status) {
+      case "On Track":
+        return "success";
+      case "Completed":
+        return "success";
+      case "At Risk":
+        return "warning";
+      case "Delayed":
+        return "destructive";
+      case "In Progress":
+        return "secondary";
+      case "On Hold":
+        return "outline";
+      default:
+        return "outline";
+    }
+  };
+
 export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col items-center gap-2 text-center">
+       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl font-headline">SynapseAI</h1>
-        <p className="text-lg text-muted-foreground">The guardian of purpose and storyteller of progress.</p>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatCard
@@ -112,7 +130,7 @@ export default function DashboardPage() {
                     <TableCell className="font-medium">{activity.project}</TableCell>
                     <TableCell className="text-muted-foreground">{activity.task}</TableCell>
                     <TableCell className="text-right">
-                      <Badge variant={activity.status === "Completed" ? "secondary" : "outline"}>
+                       <Badge variant={getStatusVariant(activity.status)}>
                         {activity.status}
                       </Badge>
                     </TableCell>

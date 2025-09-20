@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { User, Bell, PanelLeft } from "lucide-react";
+import { User, Bell, PanelLeft, Sun, Moon } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,17 +20,23 @@ import {
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import Image from "next/image";
 import { menuItems } from "./menu-items";
+import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
 
 export default function AppHeader() {
   const userAvatar = PlaceHolderImages.find(img => img.id === 'user-avatar');
+  const { setTheme, theme } = useTheme();
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center justify-center border-b bg-background px-4 md:px-6">
+    <header className={cn(
+        "sticky top-0 z-30 flex h-16 items-center justify-center border-b px-4 md:px-6",
+        "bg-gradient-to-r from-primary via-accent to-secondary text-primary-foreground animated-gradient"
+        )}>
         <div className="md:hidden">
             <Sheet>
             <SheetTrigger asChild>
                 <Button
-                variant="outline"
+                variant="ghost"
                 size="icon"
                 className="shrink-0"
                 >
@@ -72,13 +78,23 @@ export default function AppHeader() {
             <Link
               key={item.label}
               href={item.href}
-              className="text-muted-foreground transition-colors hover:text-foreground"
+              className="text-primary-foreground/80 transition-colors hover:text-primary-foreground"
             >
               {item.label}
             </Link>
           ))}
         </nav>
         <div className="flex w-full items-center justify-end gap-4 md:ml-auto md:gap-2 lg:gap-4">
+        <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full"
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+        >
+            <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            <span className="sr-only">Toggle theme</span>
+        </Button>
         <Button variant="ghost" size="icon" className="rounded-full">
           <Bell className="h-5 w-5" />
           <span className="sr-only">Toggle notifications</span>

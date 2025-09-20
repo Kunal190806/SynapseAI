@@ -107,9 +107,10 @@ const projects = [
   },
 ];
 
-const getStatusVariant = (status: string): "success" | "destructive" | "warning" | "secondary" | "outline" => {
+const getStatusVariant = (status: string): "success" | "warning" | "destructive" | "secondary" | "outline" => {
     switch (status) {
       case "On Track":
+        return "success";
       case "Completed":
         return "success";
       case "At Risk":
@@ -118,6 +119,8 @@ const getStatusVariant = (status: string): "success" | "destructive" | "warning"
         return "destructive";
       case "In Progress":
         return "secondary";
+      case "On Hold":
+        return "outline";
       default:
         return "outline";
     }

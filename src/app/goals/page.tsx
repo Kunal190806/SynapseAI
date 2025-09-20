@@ -1,9 +1,29 @@
 // src/app/goals/page.tsx
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
+import { Badge, badgeVariants } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Target, Zap, Rocket, Handshake, TrendingUp, Users, Heart, Globe } from "lucide-react";
+import { Target, Zap, Rocket, Handshake, TrendingUp, Users, Heart, Globe, Lightbulb } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const getStatusVariant = (status: string): "success" | "warning" | "destructive" | "secondary" | "outline" => {
+    switch (status) {
+      case "On Track":
+        return "success";
+      case "Completed":
+        return "success";
+      case "At Risk":
+        return "warning";
+      case "Delayed":
+        return "destructive";
+      case "In Progress":
+        return "secondary";
+      case "On Hold":
+        return "outline";
+      default:
+        return "outline";
+    }
+  };
 
 const strategicGoals = [
   {
@@ -131,7 +151,7 @@ export default function GoalsPage() {
                             <span className="font-medium">{project.name}</span>
                             <div className="flex items-center gap-4">
                               <Badge variant="outline">Alignment: {project.alignment}</Badge>
-                              <Badge variant={project.status === "On Track" || project.status === "Completed" ? "secondary" : "outline"}>{project.status}</Badge>
+                              <Badge variant={getStatusVariant(project.status)}>{project.status}</Badge>
                             </div>
                           </li>
                         ))}
@@ -160,7 +180,7 @@ export default function GoalsPage() {
                       {goal.projects.map((project, index) => (
                         <li key={index} className="flex items-center justify-between text-sm">
                           <span className="font-medium">{project.name}</span>
-                          <Badge variant={project.status === "Completed" ? "secondary" : "outline"}>{project.status}</Badge>
+                           <Badge variant={getStatusVariant(project.status)}>{project.status}</Badge>
                         </li>
                       ))}
                     </ul>
