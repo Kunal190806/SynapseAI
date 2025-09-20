@@ -20,7 +20,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import ChatInterface from "@/components/chat-interface";
 
 const recentActivities = [
   { project: "Project Phoenix", task: "Deploy to staging", status: "Completed", user: "Alice" },
@@ -37,7 +36,6 @@ export default function DashboardPage() {
         <p className="text-muted-foreground max-w-xl">
           The Cognitive Nervous System for Organizations. Real-time alignment between strategic intent and operational execution.
         </p>
-        <ChatInterface />
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatCard
