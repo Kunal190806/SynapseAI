@@ -18,7 +18,26 @@ const chartData = [
 const chartConfig = {
   progress: {
     label: 'Progress',
-    color: 'hsl(var(--primary))',
+  },
+   'chart-1': {
+    label: 'Chart 1',
+    color: 'hsl(var(--chart-1))',
+  },
+  'chart-2': {
+    label: 'Chart 2',
+    color: 'hsl(var(--chart-2))',
+  },
+  'chart-3': {
+    label: 'Chart 3',
+    color: 'hsl(var(--chart-3))',
+  },
+  'chart-4': {
+    label: 'Chart 4',
+    color: 'hsl(var(--chart-4))',
+  },
+  'chart-5': {
+    label: 'Chart 5',
+    color: 'hsl(var(--chart-5))',
   },
 };
 
