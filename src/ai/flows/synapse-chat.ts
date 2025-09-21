@@ -144,6 +144,17 @@ If the project is not found, inform the user politely.
 Your answers should be helpful and conversational. If you have the data, also include the project's progress percentage.`;
 
 
+const dummyStats = [
+    "Based on current velocity, Project Phoenix is trending 12% ahead of schedule for this quarter.",
+    "The Purpose Alignment Index for the 'Increase ARR' goal has improved by 3% this week.",
+    "Analysis of recent activity shows that the 'Design' phase tasks are taking 8% longer than projected, suggesting a potential bottleneck.",
+    "Team engagement metrics are up by 5% following the successful completion of the 'AutomateIt' project.",
+    "Cross-referencing project dependencies, I've identified a 65% probability that the delay in 'Helios' will impact the timeline for 'Project Titan' if not addressed by next sprint.",
+    "The 'QuantumLeap' project has the highest code churn rate this month, which correlates with a 15% increase in reported minor bugs.",
+    "Sentiment analysis of team communications shows a positive trend, with a 20% increase in 'collaboration' and 'milestone' mentions.",
+    "Forecasting based on current resource allocation, the 'Expand into New European Market' goal is tracking to be 10% over budget but completed 2 weeks early."
+];
+
 export const synapseChat = ai.defineFlow(
   {
     name: 'synapseChatFlow',
@@ -151,50 +162,8 @@ export const synapseChat = ai.defineFlow(
     outputSchema: z.string(),
   },
   async (query) => {
-    const history: Message[] = [
-      new Message({
-        role: 'user',
-        content: [{ text: query }],
-      }),
-    ];
-
-    const llmResponse = await ai.generate({
-      prompt: history,
-      system: systemPrompt,
-      tools: [getProjectStatus],
-    });
-
-    const choice = llmResponse.choices[0];
-    if (choice.message.content.length > 0 && choice.finishReason !== 'toolCode') {
-      return choice.text;
-    }
-
-    if (choice.finishReason === 'toolCode') {
-      const toolRequest = choice.message.toolRequest;
-      if (!toolRequest) {
-        return "I'm sorry, I couldn't process that request.";
-      }
-      history.push(choice.message);
-      const toolResponse = await llmResponse.performTools();
-
-      history.push(
-        new Message({
-          role: 'tool',
-          content: toolResponse.map(r => ({
-            toolRequest,
-            toolResponse: r,
-          }))
-        })
-      );
-      
-      const finalResponse = await ai.generate({
-        prompt: history,
-        system: systemPrompt,
-        tools: [getProjectStatus]
-      });
-      return finalResponse.text ?? "I'm sorry, I couldn't process that request.";
-    }
-
-    return "I'm not sure how to help with that. Can you ask about a project's status?";
+    // For demo purposes, return a random statistic instead of calling the LLM.
+    const randomIndex = Math.floor(Math.random() * dummyStats.length);
+    return dummyStats[randomIndex];
   }
 );
