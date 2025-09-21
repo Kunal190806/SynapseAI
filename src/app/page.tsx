@@ -197,7 +197,7 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
             
-          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
             <StatCard
               title={t("Purpose Alignment")}
               value="92%"
@@ -225,8 +225,8 @@ export default function DashboardPage() {
             />
           </div>
 
-          <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
-            <Card>
+          <div className="grid gap-4 grid-cols-1 lg:grid-cols-5">
+            <Card className="lg:col-span-3">
               <CardHeader>
                 <CardTitle>{t("Alignment Over Time")}</CardTitle>
                 <CardDescription>
@@ -237,7 +237,7 @@ export default function DashboardPage() {
                 <AlignmentChart />
               </CardContent>
             </Card>
-            <Card>
+            <Card className="lg:col-span-2">
               <CardHeader>
                 <CardTitle>{t("Project Progress")}</CardTitle>
                 <CardDescription>
