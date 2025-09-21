@@ -121,10 +121,12 @@ export default function TeamsPage() {
                         </div>
                       ))}
                     </div>
-                    <div className="flex gap-2 pt-4 border-t">
+                    <div className="flex gap-2 pt-4 border-t flex-col sm:flex-row">
                         <Input placeholder={t("Enter meeting code")} />
-                        <Button>{t("Join")}</Button>
-                        <Button variant="secondary"><Plus className="mr-2 h-4 w-4" /> {t("New")}</Button>
+                        <div className="flex gap-2">
+                            <Button className="flex-1 sm:flex-none">{t("Join")}</Button>
+                            <Button variant="secondary" className="flex-1 sm:flex-none"><Plus className="mr-2 h-4 w-4" /> {t("New")}</Button>
+                        </div>
                     </div>
                   </CardContent>
                 </Card>

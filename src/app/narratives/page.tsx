@@ -29,13 +29,14 @@ import {
 } from '@/components/ui/form';
 import {Input} from '@/components/ui/input';
 import {Textarea} from '@/components/ui/textarea';
-import {Loader2, Activity, Target, CheckCircle, BrainCircuit, Download, Sparkles} from 'lucide-react';
+import {Loader2, Activity, Target, CheckCircle, BrainCircuit, Download, Sparkles, PlusSquare} from 'lucide-react';
 import AppHeader from '@/components/layout/header';
 import AppNavbar from '@/components/layout/navbar';
 import { useTranslation } from 'react-i18next';
 import '@/lib/i18n';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { useToast } from '@/hooks/use-toast';
 
 
 const formSchema = z.object({
@@ -71,6 +72,14 @@ export default function NarrativesPage() {
     useState<GenerateStrategicNarrativeOutput | null>(dummyNarrative);
   const [isLoading, setIsLoading] = useState(false);
   const narrativeRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
+
+  const handleAddShortcut = () => {
+    toast({
+      title: "Shortcut Added",
+      description: `${t('Narrative Studio')} has been added to your shortcuts.`,
+    });
+  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -262,7 +271,7 @@ export default function NarrativesPage() {
                       </FormItem>
                     )}
                   />
-                   <div className="flex gap-2">
+                   <div className="flex gap-2 flex-wrap">
                     <Button type="submit" disabled={isLoading}>
                       {isLoading && (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -281,12 +290,20 @@ export default function NarrativesPage() {
           <div className="space-y-6">
             <div ref={narrativeRef}>
               <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle>{t("Generated Strategic Narrative")}</CardTitle>
-                  <Button id="download-button" variant="outline" size="icon" onClick={handleDownloadPdf}>
-                      <Download className="h-4 w-4" />
-                      <span className="sr-only">Download PDF</span>
-                  </Button>
+                <CardHeader className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                  <div className="flex-1">
+                    <CardTitle>{t("Generated Strategic Narrative")}</CardTitle>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm" onClick={handleAddShortcut}>
+                        <PlusSquare className="h-4 w-4 mr-2" />
+                        {t('Add Shortcut')}
+                    </Button>
+                    <Button id="download-button" variant="outline" size="icon" onClick={handleDownloadPdf}>
+                        <Download className="h-4 w-4" />
+                        <span className="sr-only">Download PDF</span>
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   {isLoading && (

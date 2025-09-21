@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Target, Zap, Rocket, Handshake, TrendingUp, Users, Heart, Globe, Lightbulb, Download, TestTube } from "lucide-react";
+import { Target, Zap, Rocket, Handshake, TrendingUp, Users, Heart, Globe, Lightbulb, Download, TestTube, PlusSquare } from "lucide-react";
 import AppHeader from "@/components/layout/header";
 import AppNavbar from "@/components/layout/navbar";
 import { useTranslation } from "react-i18next";
@@ -15,6 +15,7 @@ import html2canvas from "html2canvas";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
 
 
 const getStatusVariant = (status: string): "success" | "warning" | "destructive" | "secondary" | "outline" => {
@@ -133,6 +134,14 @@ const purposeGoals = [
 export default function GoalsPage() {
   const { t } = useTranslation();
   const goalsRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
+
+  const handleAddShortcut = () => {
+    toast({
+      title: "Shortcut Added",
+      description: `${t('Purpose & Goals')} has been added to your shortcuts.`,
+    });
+  };
 
   const handleDownloadPdf = async () => {
     const element = goalsRef.current;
@@ -199,7 +208,7 @@ export default function GoalsPage() {
         <div className="flex flex-col gap-6">
           <Card>
             <div ref={goalsRef} className="p-6 pt-0">
-              <CardHeader className="pl-0 flex flex-row items-center justify-between">
+              <CardHeader className="pl-0 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                   <div>
                       <CardTitle>{t("Purpose & Goals")}</CardTitle>
                       <CardDescription>
@@ -226,6 +235,10 @@ export default function GoalsPage() {
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>
+                     <Button variant="outline" size="sm" onClick={handleAddShortcut}>
+                        <PlusSquare className="h-4 w-4 mr-2" />
+                        {t('Add Shortcut')}
+                      </Button>
                     <Button id="download-button" variant="outline" size="icon" onClick={handleDownloadPdf}>
                         <Download className="h-4 w-4" />
                         <span className="sr-only">Download PDF</span>

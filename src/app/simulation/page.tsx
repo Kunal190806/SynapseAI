@@ -1,7 +1,7 @@
 'use client';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Loader2, Activity, Target, CheckCircle, BrainCircuit, Download, Sparkles } from 'lucide-react';
+import { Loader2, Activity, Target, CheckCircle, BrainCircuit, Download, Sparkles, PlusSquare } from 'lucide-react';
 import { useState, useRef } from "react";
 import AppHeader from "@/components/layout/header";
 import AppNavbar from "@/components/layout/navbar";
@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import '@/lib/i18n';
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { useToast } from "@/hooks/use-toast";
 
 const dashboardData = {
   overallAlignment: "92%",
@@ -28,6 +29,14 @@ export default function SimulationPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [simulationResult, setSimulationResult] = useState<string | null>(dummyResult);
   const simulationRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
+
+  const handleAddShortcut = () => {
+    toast({
+      title: "Shortcut Added",
+      description: `${t('Simulation')} has been added to your shortcuts.`,
+    });
+  };
 
   const handleStartSimulation = () => {
     setIsLoading(true);
@@ -145,7 +154,7 @@ export default function SimulationPage() {
                   </CardContent>
                 </Card>
                 <p>{t("Press the button below to start a simulation based on the current dashboard data.")}</p>
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                     <Button onClick={handleStartSimulation} disabled={isLoading}>
                     {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     {t("Start Simulation")}
@@ -158,12 +167,20 @@ export default function SimulationPage() {
             </CardContent>
           </Card>
           <Card ref={simulationRef}>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>{t("Simulation Outcome")}</CardTitle>
-              <Button id="download-button" variant="outline" size="icon" onClick={handleDownloadPdf}>
-                  <Download className="h-4 w-4" />
-                  <span className="sr-only">Download PDF</span>
-              </Button>
+            <CardHeader className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="flex-1">
+                <CardTitle>{t("Simulation Outcome")}</CardTitle>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={handleAddShortcut}>
+                    <PlusSquare className="h-4 w-4 mr-2" />
+                    {t('Add Shortcut')}
+                </Button>
+                <Button id="download-button" variant="outline" size="icon" onClick={handleDownloadPdf}>
+                    <Download className="h-4 w-4" />
+                    <span className="sr-only">Download PDF</span>
+                </Button>
+              </div>
             </CardHeader>
             <CardContent>
             {isLoading && (

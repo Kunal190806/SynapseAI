@@ -14,7 +14,7 @@ import { Progress } from "@/components/ui/progress";
 import AlignmentChart from "@/components/dashboard/alignment-chart";
 import ProgressChart from "@/components/dashboard/progress-chart";
 import TaskDistributionChart from "@/components/dashboard/task-distribution-chart";
-import { Activity, Target, CheckCircle, BrainCircuit, Download, TestTube, AlertTriangle } from 'lucide-react';
+import { Activity, Target, CheckCircle, BrainCircuit, Download, TestTube, AlertTriangle, PlusSquare } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -43,6 +43,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import AgentAlert from "@/components/dashboard/agent-alert";
+import { useToast } from "@/hooks/use-toast";
 
 const recentActivities = [
     { project: "Project Phoenix", task: "Deploy to staging", status: "Completed", user: "Alice" },
@@ -89,6 +90,14 @@ const getStatusVariant = (status: string): "success" | "warning" | "destructive"
 export default function DashboardPage() {
   const { t } = useTranslation();
   const dashboardRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
+
+  const handleAddShortcut = () => {
+    toast({
+      title: "Shortcut Added",
+      description: `${t('Dashboard')} has been added to your shortcuts.`,
+    });
+  };
 
   const handleDownloadPdf = async () => {
     const element = dashboardRef.current;
@@ -173,6 +182,10 @@ export default function DashboardPage() {
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
+            <Button variant="outline" size="sm" onClick={handleAddShortcut}>
+              <PlusSquare className="h-4 w-4 mr-2" />
+              {t('Add Shortcut')}
+            </Button>
             <Button id="download-button" variant="outline" size="sm" onClick={handleDownloadPdf}>
                 <Download className="h-4 w-4 mr-2" />
                 {t("Download PDF")}
@@ -197,7 +210,7 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
             
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             <StatCard
               title={t("Purpose Alignment")}
               value="92%"
@@ -250,8 +263,8 @@ export default function DashboardPage() {
             </Card>
           </div>
 
-          <div className="grid gap-4 grid-cols-1 lg:grid-cols-3">
-            <Card className="lg:col-span-2">
+          <div className="grid gap-4 grid-cols-1 xl:grid-cols-3">
+            <Card className="xl:col-span-2">
               <CardHeader>
                 <CardTitle>{t("Recent Activity")}</CardTitle>
                 <CardDescription>
@@ -264,6 +277,7 @@ export default function DashboardPage() {
                     <TableRow>
                       <TableHead>{t("Project")}</TableHead>
                       <TableHead className="hidden sm:table-cell">{t("Task")}</TableHead>
+                      <TableHead className="hidden md:table-cell">{t("User")}</TableHead>
                       <TableHead className="text-right">{t("Status")}</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -272,6 +286,7 @@ export default function DashboardPage() {
                       <TableRow key={index}>
                         <TableCell className="font-medium">{t(activity.project)}</TableCell>
                         <TableCell className="text-muted-foreground hidden sm:table-cell">{t(activity.task)}</TableCell>
+                        <TableCell className="text-muted-foreground hidden md:table-cell">{t(activity.user)}</TableCell>
                         <TableCell className="text-right">
                           <Badge variant={getStatusVariant(activity.status)}>
                             {t(activity.status)}

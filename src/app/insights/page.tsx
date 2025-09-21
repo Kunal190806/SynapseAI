@@ -26,7 +26,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
-import { Loader2, Activity, Target, CheckCircle, BrainCircuit, Download, Sparkles } from 'lucide-react';
+import { Loader2, Activity, Target, CheckCircle, BrainCircuit, Download, Sparkles, PlusSquare } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import AppHeader from '@/components/layout/header';
 import AppNavbar from '@/components/layout/navbar';
@@ -34,6 +34,7 @@ import { useTranslation } from 'react-i18next';
 import '@/lib/i18n';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
   organizationalData: z.string().min(1, 'Organizational data is required.'),
@@ -63,6 +64,14 @@ export default function InsightsPage() {
   );
   const [isLoading, setIsLoading] = useState(false);
   const insightsRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
+
+  const handleAddShortcut = () => {
+    toast({
+      title: "Shortcut Added",
+      description: `${t('Collective Intelligence')} has been added to your shortcuts.`,
+    });
+  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -183,7 +192,7 @@ export default function InsightsPage() {
                       </FormItem>
                     )}
                   />
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
                     <Button type="submit" disabled={isLoading}>
                       {isLoading && (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -205,10 +214,16 @@ export default function InsightsPage() {
                 <div >
                   <CardTitle>{t("Generated Insights & Recommendations")}</CardTitle>
                 </div>
-                <Button id="download-button" variant="outline" size="icon" onClick={handleDownloadPdf}>
-                    <Download className="h-4 w-4" />
-                    <span className="sr-only">Download PDF</span>
-                </Button>
+                <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm" onClick={handleAddShortcut}>
+                        <PlusSquare className="h-4 w-4 mr-2" />
+                        {t('Add Shortcut')}
+                    </Button>
+                    <Button id="download-button" variant="outline" size="icon" onClick={handleDownloadPdf}>
+                        <Download className="h-4 w-4" />
+                        <span className="sr-only">Download PDF</span>
+                    </Button>
+                </div>
               </CardHeader>
               <CardContent>
                 {isLoading && (

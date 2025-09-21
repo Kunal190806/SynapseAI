@@ -13,7 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { Filter, Download, TestTube } from "lucide-react";
+import { Filter, Download, TestTube, PlusSquare } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import AppHeader from "@/components/layout/header";
 import AppNavbar from "@/components/layout/navbar";
@@ -23,6 +23,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { useRef } from "react";
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
 
 const projects = [
   {
@@ -154,6 +155,14 @@ const getStatusVariant = (status: string): "success" | "warning" | "destructive"
 export default function ProjectsPage() {
   const { t } = useTranslation();
   const projectsRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
+
+  const handleAddShortcut = () => {
+    toast({
+      title: "Shortcut Added",
+      description: `${t('Projects')} has been added to your shortcuts.`,
+    });
+  };
 
   const handleDownloadPdf = async () => {
     const element = projectsRef.current;
@@ -222,7 +231,7 @@ export default function ProjectsPage() {
         <div className="flex flex-col gap-6">
           <Card>
              <div ref={projectsRef} className="p-6 pt-0">
-                <CardHeader className="pl-0 flex flex-row items-center justify-between">
+                <CardHeader className="pl-0 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div>
                         <CardTitle>{t("Projects")}</CardTitle>
                         <CardDescription>
@@ -252,6 +261,10 @@ export default function ProjectsPage() {
                         <Button id="filter-button" variant="outline" className="hidden sm:flex">
                             <Filter className="mr-2 h-4 w-4" />
                             {t("Filter Projects")}
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={handleAddShortcut} className="hidden sm:flex">
+                          <PlusSquare className="h-4 w-4 mr-2" />
+                          {t('Add Shortcut')}
                         </Button>
                         <Button id="download-button" variant="outline" size="icon" onClick={handleDownloadPdf}>
                             <Download className="h-4 w-4" />
