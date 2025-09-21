@@ -1,7 +1,7 @@
 'use client';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Loader2, Activity, Target, CheckCircle, BrainCircuit, Download } from 'lucide-react';
+import { Loader2, Activity, Target, CheckCircle, BrainCircuit, Download, Sparkles } from 'lucide-react';
 import { useState, useRef } from "react";
 import AppHeader from "@/components/layout/header";
 import AppNavbar from "@/components/layout/navbar";
@@ -21,10 +21,12 @@ const dashboardData = {
   ],
 };
 
+const dummyResult = "Simulation complete. The simulation predicts a 15% increase in project completion efficiency by reallocating resources from Project Nova to Project Phoenix. Potential risks include a 5% budget overrun but a 10% faster time-to-market.";
+
 export default function SimulationPage() {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
-  const [simulationResult, setSimulationResult] = useState<string | null>(null);
+  const [simulationResult, setSimulationResult] = useState<string | null>(dummyResult);
   const simulationRef = useRef<HTMLDivElement>(null);
 
   const handleStartSimulation = () => {
@@ -32,10 +34,15 @@ export default function SimulationPage() {
     setSimulationResult(null);
     // Simulate an API call
     setTimeout(() => {
-      setSimulationResult(t("Simulation complete. The simulation predicts a 15% increase in project completion efficiency by reallocating resources from Project Nova to Project Phoenix. Potential risks include a 5% budget overrun but a 10% faster time-to-market."));
+      setSimulationResult(t(dummyResult));
       setIsLoading(false);
     }, 2000);
   };
+  
+  const onGenerateDummy = () => {
+    setIsLoading(false);
+    setSimulationResult(t(dummyResult));
+  }
 
   const handleDownloadPdf = async () => {
     const element = simulationRef.current;
@@ -138,10 +145,16 @@ export default function SimulationPage() {
                   </CardContent>
                 </Card>
                 <p>{t("Press the button below to start a simulation based on the current dashboard data.")}</p>
-                <Button onClick={handleStartSimulation} disabled={isLoading}>
-                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {t("Start Simulation")}
-                </Button>
+                <div className="flex gap-2">
+                    <Button onClick={handleStartSimulation} disabled={isLoading}>
+                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {t("Start Simulation")}
+                    </Button>
+                    <Button type="button" variant="secondary" onClick={onGenerateDummy}>
+                        <Sparkles className="mr-2 h-4 w-4" />
+                        {t("Generate Dummy Data")}
+                    </Button>
+                </div>
             </CardContent>
           </Card>
           <Card ref={simulationRef}>

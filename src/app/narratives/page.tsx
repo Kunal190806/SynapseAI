@@ -29,7 +29,7 @@ import {
 } from '@/components/ui/form';
 import {Input} from '@/components/ui/input';
 import {Textarea} from '@/components/ui/textarea';
-import {Loader2, Activity, Target, CheckCircle, BrainCircuit, Download} from 'lucide-react';
+import {Loader2, Activity, Target, CheckCircle, BrainCircuit, Download, Sparkles} from 'lucide-react';
 import AppHeader from '@/components/layout/header';
 import AppNavbar from '@/components/layout/navbar';
 import { useTranslation } from 'react-i18next';
@@ -60,11 +60,15 @@ const dashboardData = {
   ],
 };
 
+const dummyNarrative: GenerateStrategicNarrativeOutput = {
+    strategicNarrative: "The QuantumLeap CRM Integration project is making significant strides, currently at 75% completion. This initiative is pivotal to our 'Customer 360' strategy, aiming to unify customer data and enhance cross-selling opportunities by 25%. Key successes include a near-flawless data migration (99.8% accuracy) and positive internal feedback on the new user interface. Despite a minor two-week delay due to API challenges with a legacy system, the team has effectively mitigated further risks by parallelizing tasks. The project remains a cornerstone of our revenue growth goals, promising to empower our sales team and drive significant business impact upon completion."
+};
+
 
 export default function NarrativesPage() {
   const { t } = useTranslation();
   const [narrative, setNarrative] =
-    useState<GenerateStrategicNarrativeOutput | null>({strategicNarrative: "The QuantumLeap CRM Integration project is making significant strides, currently at 75% completion. This initiative is pivotal to our 'Customer 360' strategy, aiming to unify customer data and enhance cross-selling opportunities by 25%. Key successes include a near-flawless data migration (99.8% accuracy) and positive internal feedback on the new user interface. Despite a minor two-week delay due to API challenges with a legacy system, the team has effectively mitigated further risks by parallelizing tasks. The project remains a cornerstone of our revenue growth goals, promising to empower our sales team and drive significant business impact upon completion."});
+    useState<GenerateStrategicNarrativeOutput | null>(dummyNarrative);
   const [isLoading, setIsLoading] = useState(false);
   const narrativeRef = useRef<HTMLDivElement>(null);
 
@@ -92,6 +96,11 @@ export default function NarrativesPage() {
     } finally {
       setIsLoading(false);
     }
+  }
+
+  const onGenerateDummy = () => {
+    setIsLoading(false);
+    setNarrative(dummyNarrative);
   }
 
   const handleDownloadPdf = async () => {
@@ -253,12 +262,18 @@ export default function NarrativesPage() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" disabled={isLoading}>
-                    {isLoading && (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    )}
-                    {t("Generate Narrative")}
-                  </Button>
+                   <div className="flex gap-2">
+                    <Button type="submit" disabled={isLoading}>
+                      {isLoading && (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      )}
+                      {t("Generate Narrative")}
+                    </Button>
+                    <Button type="button" variant="secondary" onClick={onGenerateDummy}>
+                        <Sparkles className="mr-2 h-4 w-4" />
+                        {t("Generate Dummy Data")}
+                    </Button>
+                  </div>
                 </form>
               </Form>
             </CardContent>
