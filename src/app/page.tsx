@@ -287,7 +287,7 @@ export default function DashboardPage() {
                         <TableCell className="font-medium">{t(activity.project)}</TableCell>
                         <TableCell className="text-muted-foreground hidden sm:table-cell">{t(activity.task)}</TableCell>
                         <TableCell className="text-muted-foreground hidden md:table-cell">{t(activity.user)}</TableCell>
-                        <TableCell className="text-right">
+                          <TableCell className="text-right">
                           <Badge variant={getStatusVariant(activity.status)}>
                             {t(activity.status)}
                           </Badge>

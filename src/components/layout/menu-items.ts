@@ -1,4 +1,4 @@
-import { LayoutDashboard, Goal, KanbanSquare, FileText, Lightbulb, TestTube, Zap, BrainCircuit, Users } from "lucide-react";
+import { LayoutDashboard, Goal, KanbanSquare, FileText, Lightbulb, TestTube, Zap, BrainCircuit, Users, Cpu } from "lucide-react";
 
 export const menuItems = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -9,4 +9,5 @@ export const menuItems = [
   { href: '/teams', label: 'Teams', icon: Users },
   { href: '/simulation', label: 'Simulation', icon: TestTube },
   { href: '/project-management', label: 'Adaptive Management', icon: Zap },
+  { href: '/passive-agents', label: 'Passive Agents', icon: Cpu },
 ];

@@ -13,6 +13,7 @@ const resources = {
       "Teams": "Teams",
       "Simulation": "Simulation",
       "Adaptive Management": "Adaptive Management",
+      "Passive Agents": "Passive Agents",
 
       "Purpose Alignment": "Purpose Alignment",
       "+5% from last month": "+5% from last month",
@@ -205,7 +206,25 @@ const resources = {
       "Onboard new team members": "Onboard new team members",
       "Run Scenario": "Run Scenario",
       "Simulate": "Simulate",
-      "Generate Dummy Data": "Generate Dummy Data"
+      "Generate Dummy Data": "Generate Dummy Data",
+      "Monitor the status and activity of your autonomous agents.": "Monitor the status and activity of your autonomous agents.",
+      "Risk Monitoring Agent": "Risk Monitoring Agent",
+      "Continuously analyzes project data to identify potential risks and delays before they impact timelines.": "Continuously analyzes project data to identify potential risks and delays before they impact timelines.",
+      "Active": "Active",
+
+      "Weekly Digest Agent": "Weekly Digest Agent",
+      "Generates a weekly summary of project progress, key achievements, and alignment scores for leadership.": "Generates a weekly summary of project progress, key achievements, and alignment scores for leadership.",
+      "Idle": "Idle",
+
+      "Opportunity Scout Agent": "Opportunity Scout Agent",
+      "Scans customer feedback and market trends to identify new feature opportunities or strategic pivots.": "Scans customer feedback and market trends to identify new feature opportunities or strategic pivots.",
+
+      "Resource Allocation Agent": "Resource Allocation Agent",
+      "Suggests optimal resource re-allocations based on project priorities, team workload, and skill sets.": "Suggests optimal resource re-allocations based on project priorities, team workload, and skill sets.",
+      "Paused": "Paused",
+
+      "Onboarding Buddy Agent": "Onboarding Buddy Agent",
+      "Assists new team members by providing them with relevant documentation, project context, and key contacts.": "Assists new team members by providing them with relevant documentation, project context, and key contacts."
     }
   },
   hi: {
@@ -218,6 +237,7 @@ const resources = {
       "Teams": "टीमें",
       "Simulation": "सिमुलेशन",
       "Adaptive Management": "अनुकूली प्रबंधन",
+      "Passive Agents": "निष्क्रिय एजेंट",
       "Purpose Alignment": "उद्देश्य संरेखण",
       "+5% from last month": "पिछले महीने से +5%",
       "Active Projects": "सक्रिय परियोजनाएं",
@@ -402,7 +422,25 @@ const resources = {
       "Onboard new team members": "नई टीम के सदस्यों को ऑनबोर्ड करें",
       "Run Scenario": "परिदृश्य चलाएँ",
       "Simulate": "अनुकरण",
-      "Generate Dummy Data": "डमी डेटा उत्पन्न करें"
+      "Generate Dummy Data": "डमी डेटा उत्पन्न करें",
+      "Monitor the status and activity of your autonomous agents.": "अपने स्वायत्त एजेंटों की स्थिति और गतिविधि की निगरानी करें।",
+      "Risk Monitoring Agent": "जोखिम निगरानी एजेंट",
+      "Continuously analyzes project data to identify potential risks and delays before they impact timelines.": "समय-सीमा को प्रभावित करने से पहले संभावित जोखिमों और देरी की पहचान करने के लिए परियोजना डेटा का लगातार विश्लेषण करता है।",
+      "Active": "सक्रिय",
+
+      "Weekly Digest Agent": "साप्ताहिक डाइजेस्ट एजेंट",
+      "Generates a weekly summary of project progress, key achievements, and alignment scores for leadership.": "नेतृत्व के लिए परियोजना की प्रगति, प्रमुख उपलब्धियों और संरेखण स्कोर का साप्ताहिक सारांश उत्पन्न करता है।",
+      "Idle": "निष्क्रिय",
+
+      "Opportunity Scout Agent": "अवसर स्काउट एजेंट",
+      "Scans customer feedback and market trends to identify new feature opportunities or strategic pivots.": "नई सुविधा के अवसरों या रणनीतिक धुरों की पहचान करने के लिए ग्राहक प्रतिक्रिया और बाजार के रुझानों को स्कैन करता है।",
+
+      "Resource Allocation Agent": "संसाधन आवंटन एजेंट",
+      "Suggests optimal resource re-allocations based on project priorities, team workload, and skill sets.": "परियोजना प्राथमिकताओं, टीम के कार्यभार और कौशल सेट के आधार पर इष्टतम संसाधन पुन: आवंटन का सुझाव देता है।",
+      "Paused": "रोका गया",
+
+      "Onboarding Buddy Agent": "ऑनबोर्डिंग बडी एजेंट",
+      "Assists new team members by providing them with relevant documentation, project context, and key contacts.": "नए टीम सदस्यों को प्रासंगिक दस्तावेज़ीकरण, परियोजना संदर्भ और प्रमुख संपर्क प्रदान करके सहायता करता है।"
     }
   },
   mr: {
@@ -415,6 +453,7 @@ const resources = {
         "Teams": "संघ",
         "Simulation": "सिम्युलेशन",
         "Adaptive Management": "अनुकूली व्यवस्थापन",
+        "Passive Agents": "निष्क्रिय एजंट",
         "Purpose Alignment": "उद्देश संरेखन",
         "+5% from last month": "गेल्या महिन्यापेक्षा +५%",
         "Active Projects": "सक्रिय प्रकल्प",
@@ -599,7 +638,25 @@ const resources = {
         "Onboard new team members": "नवीन संघ सदस्यांना ऑनबोर्ड करा",
         "Run Scenario": "परिदृश्य चालवा",
         "Simulate": "अनुकरण करा",
-        "Generate Dummy Data": "डमी डेटा तयार करा"
+        "Generate Dummy Data": "डमी डेटा तयार करा",
+        "Monitor the status and activity of your autonomous agents.": "आपल्या स्वायत्त एजंटची स्थिती आणि क्रियाकलाप নিরীक्षण करा.",
+        "Risk Monitoring Agent": "धोका निरीक्षण एजंट",
+        "Continuously analyzes project data to identify potential risks and delays before they impact timelines.": "वेळेवर परिणाम होण्यापूर्वी संभाव्य धोके आणि विलंब ओळखण्यासाठी प्रकल्प डेटाचे सतत विश्लेषण करते.",
+        "Active": "सक्रिय",
+
+        "Weekly Digest Agent": "साप्ताहिक डायजेस्ट एजंट",
+        "Generates a weekly summary of project progress, key achievements, and alignment scores for leadership.": "नेतृत्वासाठी प्रकल्प प्रगती, मुख्य उपलब्धी आणि संरेखन गुणांकांचा साप्ताहिक सारांश तयार करते.",
+        "Idle": "निष्क्रिय",
+
+        "Opportunity Scout Agent": "संधी शोधक एजंट",
+        "Scans customer feedback and market trends to identify new feature opportunities or strategic pivots.": "नवीन वैशिष्ट्य संधी किंवा सामरिक बदल ओळखण्यासाठी ग्राहक अभिप्राय आणि बाजारातील ट्रेंड स्कॅन करते.",
+
+        "Resource Allocation Agent": "संसाधन वाटप एजंट",
+        "Suggests optimal resource re-allocations based on project priorities, team workload, and skill sets.": "प्रकल्प प्राधान्यक्रम, संघ कामाचा ताण आणि कौशल्य संचांवर आधारित सर्वोत्तम संसाधन पुनर्वाटपाचे सुचवते.",
+        "Paused": "थांबवले",
+
+        "Onboarding Buddy Agent": "ऑनबोर्डिंग मित्र एजंट",
+        "Assists new team members by providing them with relevant documentation, project context, and key contacts.": "नवीन संघ सदस्यांना संबंधित दस्तऐवजीकरण, प्रकल्प संदर्भ आणि मुख्य संपर्क प्रदान करून मदत करते."
     }
   }
 };
