@@ -9,5 +9,5 @@ export const menuItems = [
   { href: '/teams', label: 'Teams', icon: Users },
   { href: '/simulation', label: 'Simulation', icon: TestTube },
   { href: '/project-management', label: 'Adaptive Management', icon: Zap },
-  { href: '/passive-agents', label: 'Passive Agents', icon: Cpu },
+  { href: '/passive-agents', label: 'Agents', icon: Cpu },
 ];

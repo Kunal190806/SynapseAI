@@ -62,7 +62,7 @@ export default function PassiveAgentsPage() {
         <div className="flex flex-col gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>{t("Passive Agents")}</CardTitle>
+              <CardTitle>{t("Agents")}</CardTitle>
               <CardDescription>
                 {t("Monitor the status and activity of your autonomous agents.")}
               </CardDescription>
