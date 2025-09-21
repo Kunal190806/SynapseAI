@@ -26,7 +26,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
-import { Loader2, Activity, Target, CheckCircle, BrainCircuit, Download } from 'lucide-react';
+import { Loader2, Activity, Target, CheckCircle, BrainCircuit, Download, Sparkles } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import AppHeader from '@/components/layout/header';
 import AppNavbar from '@/components/layout/navbar';
@@ -50,10 +50,16 @@ const dashboardData = {
   ],
 };
 
+const dummyInsights: GetAiPoweredInsightsOutput = {
+    insights: "1. Revenue Growth vs. Margin: While revenue is up 15% YoY, the 2% decrease in profit margin indicates that the cost of acquisition (increased marketing spend) is outpacing growth. This trend could impact long-term profitability.\n2. Engineering/Support Imbalance: Engineering velocity is stable, but the 48-hour support ticket resolution time suggests a potential bottleneck in customer support or product quality issues that lead to more tickets.\n3. Market Opportunity: The market's positive reception to Competitor X's new feature, coupled with customer feedback desiring better mobile integration, signals a clear product development opportunity.",
+    recommendations: "1. Optimize Marketing Spend: Re-evaluate marketing channel ROI. Shift budget from high-cost, low-conversion channels to more efficient ones. A/B test new messaging focused on value rather than just features to potentially lower acquisition costs.\n2. Support Team Triage Process: Implement a stricter triage process for support tickets to prioritize critical issues. Dedicate a portion of engineering time (e.g., 10%) to address the root causes of common support tickets, reducing the overall volume.\n3. Fast-Track Mobile Integration: Create a dedicated task force to scope and prototype a mobile integration feature. Allocate resources from a lower-priority project to accelerate development and capitalize on the identified market demand before competitors."
+};
+
+
 export default function InsightsPage() {
   const { t } = useTranslation();
   const [insights, setInsights] = useState<GetAiPoweredInsightsOutput | null>(
-    null
+    dummyInsights
   );
   const [isLoading, setIsLoading] = useState(false);
   const insightsRef = useRef<HTMLDivElement>(null);
@@ -61,7 +67,7 @@ export default function InsightsPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      organizationalData: '',
+      organizationalData: "- Quarterly Sales Report (Q2 2024): Revenue up 15% YoY, but profit margin decreased by 2% due to increased marketing spend.\n- Team Performance Metrics: Engineering velocity is 20 points/sprint. Support ticket resolution time is averaging 48 hours.\n- Market Analysis: Competitor X launched a new feature that is gaining traction. Customer feedback suggests a desire for better mobile integration.",
     },
   });
 
@@ -77,6 +83,11 @@ export default function InsightsPage() {
     } finally {
       setIsLoading(false);
     }
+  }
+
+  const onGenerateDummy = () => {
+    setIsLoading(false);
+    setInsights(dummyInsights);
   }
 
   const handleDownloadPdf = async () => {
@@ -172,12 +183,18 @@ export default function InsightsPage() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" disabled={isLoading}>
-                    {isLoading && (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    )}
-                    {t("Generate Insights")}
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button type="submit" disabled={isLoading}>
+                      {isLoading && (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      )}
+                      {t("Generate Insights")}
+                    </Button>
+                    <Button type="button" variant="secondary" onClick={onGenerateDummy}>
+                      <Sparkles className="mr-2 h-4 w-4" />
+                      {t("Generate Dummy Data")}
+                    </Button>
+                  </div>
                 </form>
               </Form>
             </CardContent>
@@ -203,12 +220,12 @@ export default function InsightsPage() {
                   <div className="prose dark:prose-invert max-w-none space-y-4">
                     <div>
                       <h3 className="font-semibold">{t("Insights")}</h3>
-                      <p>{insights.insights}</p>
+                      <p className="whitespace-pre-line">{insights.insights}</p>
                     </div>
                     <Separator />
                     <div>
                       <h3 className="font-semibold">{t("Recommendations")}</h3>
-                      <p>{insights.recommendations}</p>
+                      <p className="whitespace-pre-line">{insights.recommendations}</p>
                     </div>
                   </div>
                 ) : (

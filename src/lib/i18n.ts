@@ -204,7 +204,8 @@ const resources = {
       "Analyze survey results": "Analyze survey results",
       "Onboard new team members": "Onboard new team members",
       "Run Scenario": "Run Scenario",
-      "Simulate": "Simulate"
+      "Simulate": "Simulate",
+      "Generate Dummy Data": "Generate Dummy Data"
     }
   },
   hi: {
@@ -400,7 +401,8 @@ const resources = {
       "Analyze survey results": "सर्वेक्षण परिणामों का विश्लेषण करें",
       "Onboard new team members": "नई टीम के सदस्यों को ऑनबोर्ड करें",
       "Run Scenario": "परिदृश्य चलाएँ",
-      "Simulate": "अनुकरण"
+      "Simulate": "अनुकरण",
+      "Generate Dummy Data": "डमी डेटा उत्पन्न करें"
     }
   },
   mr: {
@@ -596,7 +598,8 @@ const resources = {
         "Analyze survey results": "सर्वेक्षण परिणामांचे विश्लेषण करा",
         "Onboard new team members": "नवीन संघ सदस्यांना ऑनबोर्ड करा",
         "Run Scenario": "परिदृश्य चालवा",
-        "Simulate": "अनुकरण करा"
+        "Simulate": "अनुकरण करा",
+        "Generate Dummy Data": "डमी डेटा तयार करा"
     }
   }
 };

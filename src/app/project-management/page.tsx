@@ -26,7 +26,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
-import { Loader2, Download } from 'lucide-react';
+import { Loader2, Download, Sparkles } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import AppHeader from '@/components/layout/header';
 import AppNavbar from '@/components/layout/navbar';
@@ -42,15 +42,17 @@ const formSchema = z.object({
   performanceData: z.string().min(1, 'Performance data is required.'),
 });
 
+const dummyResult: AdaptiveProjectManagementOutput = {
+    recommendations: "1. Pair Programming for BE Devs: Pair BE Dev 1 with a senior developer to review PRs in real-time, reducing revision rounds and improving code quality.\n2. Task Re-allocation: Shift some of FE Dev 1's upcoming tasks to FE Dev 2 to balance workload and leverage their higher velocity, ensuring front-end work stays on schedule.\n3. Unblock Authentication Dependency: Escalate the authentication service dependency to the platform team lead, emphasizing its critical impact on the project timeline.",
+    riskAssessment: "The primary risk is the back-end dependency on the authentication service, which has already caused a delay. Mitigation: Daily check-ins with the platform team. Secondary risk is BE Dev 1's performance bottleneck. Mitigation: Implement pair programming and provide additional mentorship.",
+    performanceForecast: "With the proposed interventions, the project is forecasted to get back on track by the end of Sprint 4. The velocity is expected to increase to an average of 22 points. The one-week delay can be recovered, leading to an on-time launch.",
+    strategicAlignment: "By addressing these issues, we ensure the 'Project Phoenix' initiative remains on schedule, directly supporting the strategic goal of increasing user activation rates by 20%. Timely launch is critical to realizing this Q4 objective."
+};
+
 export default function ProjectManagementPage() {
   const { t } = useTranslation();
   const [result, setResult] =
-    useState<AdaptiveProjectManagementOutput | null>({
-        recommendations: "1. Pair Programming for BE Devs: Pair BE Dev 1 with a senior developer to review PRs in real-time, reducing revision rounds and improving code quality.\n2. Task Re-allocation: Shift some of FE Dev 1's upcoming tasks to FE Dev 2 to balance workload and leverage their higher velocity, ensuring front-end work stays on schedule.\n3. Unblock Authentication Dependency: Escalate the authentication service dependency to the platform team lead, emphasizing its critical impact on the project timeline.",
-        riskAssessment: "The primary risk is the back-end dependency on the authentication service, which has already caused a delay. Mitigation: Daily check-ins with the platform team. Secondary risk is BE Dev 1's performance bottleneck. Mitigation: Implement pair programming and provide additional mentorship.",
-        performanceForecast: "With the proposed interventions, the project is forecasted to get back on track by the end of Sprint 4. The velocity is expected to increase to an average of 22 points. The one-week delay can be recovered, leading to an on-time launch.",
-        strategicAlignment: "By addressing these issues, we ensure the 'Project Phoenix' initiative remains on schedule, directly supporting the strategic goal of increasing user activation rates by 20%. Timely launch is critical to realizing this Q4 objective."
-    });
+    useState<AdaptiveProjectManagementOutput | null>(dummyResult);
   const [isLoading, setIsLoading] = useState(false);
   const analysisRef = useRef<HTMLDivElement>(null);
 
@@ -76,6 +78,11 @@ export default function ProjectManagementPage() {
     } finally {
       setIsLoading(false);
     }
+  }
+
+  const onGenerateDummy = () => {
+    setIsLoading(false);
+    setResult(dummyResult);
   }
 
   const handleDownloadPdf = async () => {
@@ -210,12 +217,18 @@ export default function ProjectManagementPage() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" disabled={isLoading}>
-                    {isLoading && (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    )}
-                    {t("Generate Recommendations")}
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button type="submit" disabled={isLoading}>
+                      {isLoading && (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      )}
+                      {t("Generate Recommendations")}
+                    </Button>
+                    <Button type="button" variant="secondary" onClick={onGenerateDummy}>
+                      <Sparkles className="mr-2 h-4 w-4" />
+                      {t("Generate Dummy Data")}
+                    </Button>
+                  </div>
                 </form>
               </Form>
             </CardContent>
