@@ -14,7 +14,7 @@ import { Progress } from "@/components/ui/progress";
 import AlignmentChart from "@/components/dashboard/alignment-chart";
 import ProgressChart from "@/components/dashboard/progress-chart";
 import TaskDistributionChart from "@/components/dashboard/task-distribution-chart";
-import { Activity, Target, CheckCircle, BrainCircuit, Download, TestTube } from 'lucide-react';
+import { Activity, Target, CheckCircle, BrainCircuit, Download, TestTube, AlertTriangle } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -34,6 +34,7 @@ import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
+  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -41,6 +42,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import AgentAlert from "@/components/dashboard/agent-alert";
 
 const recentActivities = [
     { project: "Project Phoenix", task: "Deploy to staging", status: "Completed", user: "Alice" },
@@ -51,6 +53,19 @@ const recentActivities = [
     { project: "Customer Voice", task: "Analyze survey results", status: "On Track", user: "Frank" },
     { project: "AutomateIt", task: "Onboard new team members", status: "Completed", user: "Grace" },
 ];
+
+const agentAlerts = [
+    {
+      title: "Goal At Risk: Enhance Operational Efficiency",
+      description: "Project Orion's 'At Risk' status for over 2 weeks is jeopardizing the 'Enhance Operational Efficiency' goal. The project is blocked by a critical API bug.",
+      suggestion: "Reallocate one senior developer from 'Project Phoenix' (currently ahead of schedule) to assist the 'Orion' team for a 1-week sprint. This is projected to unblock the API issue and bring 'Orion' back on track."
+    },
+    {
+        title: "Opportunity Detected: Improve Customer Satisfaction",
+        description: "The 'Customer Voice' project has identified a high-impact, low-effort feature request that aligns with the 'Improve Customer Satisfaction' goal.",
+        suggestion: "Create a new micro-project to implement the 'One-Click Report Export' feature. This can be staffed by a junior developer and is forecasted to increase the Customer Satisfaction score by 2% with minimal resource impact."
+    }
+]
 
 const getStatusVariant = (status: string): "success" | "warning" | "destructive" | "secondary" | "outline" => {
     switch (status) {
@@ -164,6 +179,24 @@ export default function DashboardPage() {
             </Button>
         </div>
         <div className="flex flex-col gap-6" ref={dashboardRef}>
+
+          <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center text-lg gap-2">
+                    <AlertTriangle className="h-5 w-5 text-destructive" />
+                    <span>Agent Alerts</span>
+                </CardTitle>
+                <CardDescription>
+                    Proactive risks and opportunities identified by SynapseAI.
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                {agentAlerts.map((alert, index) => (
+                    <AgentAlert key={index} title={alert.title} description={alert.description} suggestion={alert.suggestion} />
+                ))}
+            </CardContent>
+          </Card>
+            
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             <StatCard
               title={t("Purpose Alignment")}
