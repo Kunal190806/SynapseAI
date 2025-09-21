@@ -1,10 +1,10 @@
-
+// src/components/layout/header.tsx
 'use client';
 
 import Link from "next/link";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { User, Bell, PanelLeft, Sun, Moon, LogOut, Languages } from "lucide-react";
+import { User, Bell, PanelLeft, Sun, Moon, LogOut, Languages, PlusSquare } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,9 +25,10 @@ import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import React from "react";
 import Logo from "@/components/logo";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useTranslation } from 'react-i18next';
 import '@/lib/i18n';
+import { useToast } from "@/hooks/use-toast";
 
 
 export default function AppHeader() {
@@ -35,8 +36,9 @@ export default function AppHeader() {
   const { setTheme, theme } = useTheme();
   const [isClient, setIsClient] = React.useState(false);
   const router = useRouter();
-  const { i18n } = useTranslation();
-
+  const pathname = usePathname();
+  const { t, i18n } = useTranslation();
+  const { toast } = useToast();
 
   React.useEffect(() => {
     setIsClient(true);
@@ -48,6 +50,14 @@ export default function AppHeader() {
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
+  };
+
+  const handleAddShortcut = () => {
+    const pageName = menuItems.find(item => item.href === pathname)?.label || 'Current Page';
+    toast({
+      title: "Shortcut Added",
+      description: `${t(pageName)} has been added to your shortcuts.`,
+    });
   };
 
   return (
@@ -95,6 +105,16 @@ export default function AppHeader() {
         <div className="flex items-center justify-end gap-2 md:gap-4 flex-1">
             {isClient && (
               <>
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="rounded-full"
+                    onClick={handleAddShortcut}
+                    >
+                    <PlusSquare className="h-5 w-5" />
+                    <span className="sr-only">Add shortcut</span>
+                </Button>
+
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                       <Button
