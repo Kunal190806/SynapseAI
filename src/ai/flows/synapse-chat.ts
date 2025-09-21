@@ -137,6 +137,13 @@ const getProjectStatus = ai.defineTool(
   }
 );
 
+const systemPrompt = `You are AGENT X, an AI assistant for SynapseAI, the cognitive nervous system for organizations.
+Your role is to provide clear, concise, and accurate information about project status.
+When a user asks about a project, use the getProjectStatus tool to fetch the latest information.
+If the project is not found, inform the user politely.
+Your answers should be helpful and conversational. If you have the data, also include the project's progress percentage.`;
+
+
 export const synapseChat = ai.defineFlow(
   {
     name: 'synapseChatFlow',
@@ -152,14 +159,8 @@ export const synapseChat = ai.defineFlow(
     ];
 
     const llmResponse = await ai.generate({
-      prompt: {
-        system: `You are AGENT X, an AI assistant for SynapseAI, the cognitive nervous system for organizations.
-Your role is to provide clear, concise, and accurate information about project status.
-When a user asks about a project, use the getProjectStatus tool to fetch the latest information.
-If the project is not found, inform the user politely.
-Your answers should be helpful and conversational. If you have the data, also include the project's progress percentage.`,
-        messages: history
-      },
+      prompt: history,
+      system: systemPrompt,
       tools: [getProjectStatus],
     });
 
@@ -187,14 +188,8 @@ Your answers should be helpful and conversational. If you have the data, also in
       );
       
       const finalResponse = await ai.generate({
-        prompt: {
-          system: `You are AGENT X, an AI assistant for SynapseAI, the cognitive nervous system for organizations.
-Your role is to provide clear, concise, and accurate information about project status.
-When a user asks about a project, use the getProjectStatus tool to fetch the latest information.
-If the project is not found, inform the user politely.
-Your answers should be helpful and conversational. If you have the data, also include the project's progress percentage.`,
-          messages: history
-        },
+        prompt: history,
+        system: systemPrompt,
         tools: [getProjectStatus]
       });
       return finalResponse.text ?? "I'm sorry, I couldn't process that request.";
